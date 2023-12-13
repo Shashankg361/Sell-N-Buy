@@ -6,15 +6,14 @@ export default function Login(){
     const {LoggedIn , setLoggedIn} = useContext(pool);
     const {register , handleSubmit ,formState: {errors}} = useForm();
     const submit = async (data)=>{ 
-        //console.log(data);
-        const {Username , Password} = data;
-        const response = await axios.post("/api/login",{Username , Password});
+        console.log(data);
+        const {Username,Password} = data;
+        console.log(Username,Password);
+        const response = await axios.post("/api/login",{Username,Password});
         const Resdata = response.data;
         console.log("message ",Resdata.Message , Resdata.LoggedIn);
         setLoggedIn(Resdata.LoggedIn);
-
     }
-
 
     return(
         <>

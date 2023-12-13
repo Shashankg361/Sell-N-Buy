@@ -4,6 +4,7 @@ export default async function registration(req , res){
 
     if(req.method === 'POST'){
         const {Email , Username , Password ,now} = req.body;
+        console.log("registration pass ",Password);
         const db = client.db('User_Details');
         const collection = db.collection('Registration');
         const PasswordCred = getHashedPass(Password);
@@ -21,9 +22,10 @@ export default async function registration(req , res){
 const getHashedPass = (Password)=>{
     const saltRound = 10;
     const salt = bcrypt.genSaltSync(saltRound);
-    const saltPassword = Password + salt;
-
+    const saltPassword = Password+salt;
+    console.log("saltPassword",saltPassword);
+    console.log(saltPassword);
     const hashedPassword = bcrypt.hashSync(saltPassword , saltRound);
-    return {hashedPassword , salt} ;
+    return {hashedPassword , salt};
 
 }
