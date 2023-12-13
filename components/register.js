@@ -1,9 +1,17 @@
+import axios from "axios";
 import { useForm } from "react-hook-form"
 
 export default function Register(){
     const {register , formState:{errors} , handleSubmit} = useForm();
-    const submit = data=>{
-        console.log(data);
+    const submit = async (detail)=>{
+        //console.log(data);
+        const {Email , Username , Password} = detail;
+        const now = new Date();
+        const data = {Email , Username , Password ,now};
+        const response = await axios.post("/api/registration",data);
+        if(response.data){
+            alert(response.data.Message);
+        }
     }
 
     return(

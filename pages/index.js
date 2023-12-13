@@ -1,13 +1,15 @@
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Login from '@/components/login';
 import Register from '@/components/register';
+import { connectDB } from '@/database/handleDatabase';
 
 const inter = Inter({ subsets: ['latin'] })
-
-export default function Home() {
-
+export default function Home({Message}) {
+  useEffect(()=>{
+    console.log("Message : ",Message);
+  },[])
   const [log , setLog] = useState('true');
 
   function login(){
@@ -33,4 +35,17 @@ export default function Home() {
       </div>
     </main>
   )
+}
+
+export async function getServerSideProps(){
+  try{
+    await connectDB();
+    return{
+      props:{Message:'Database connected successfully'},
+    }
+  }catch(error){
+    return{
+      props:{Message:error},
+    }
+  }   
 }

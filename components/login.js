@@ -1,8 +1,18 @@
+import { pool } from "@/pages/_app";
+import axios from "axios";
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
 export default function Login(){
+    const {LoggedIn , setLoggedIn} = useContext(pool);
     const {register , handleSubmit ,formState: {errors}} = useForm();
-    const submit = (data)=>{ 
-        console.log(data);
+    const submit = async (data)=>{ 
+        //console.log(data);
+        const {Username , Password} = data;
+        const response = await axios.post("/api/login",{Username , Password});
+        const Resdata = response.data;
+        console.log("message ",Resdata.Message , Resdata.LoggedIn);
+        setLoggedIn(Resdata.LoggedIn);
+
     }
 
 
