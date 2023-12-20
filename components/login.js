@@ -2,7 +2,9 @@ import { pool } from "@/pages/_app";
 import axios from "axios";
 import { useContext } from "react";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/router";
 export default function Login(){
+    const router = useRouter();
     const {LoggedIn , setLoggedIn} = useContext(pool);
     const {register , handleSubmit ,formState: {errors}} = useForm();
     const submit = async (data)=>{ 
@@ -11,10 +13,11 @@ export default function Login(){
         console.log(Username,Password);
         const response = await axios.post("/api/login",{Username,Password});
         const Resdata = response.data;
-        console.log("message ",Resdata.Message , Resdata.LoggedIn);
+        console.log("message",Resdata.Message , Resdata.LoggedIn);
         setLoggedIn(Resdata.LoggedIn);
     }
-
+    console.log(LoggedIn);
+    
     return(
         <>
         <form className="text-black flex flex-col mt-10 p-5" onSubmit={handleSubmit(submit)}>

@@ -13,8 +13,10 @@ export default async function login(req, res){
         const matched = calculation(PasswordCred,Password);
         console.log('matched',matched);
         if(matched){
-            createSession(Username);
-            res.status(200).json({LoggedIn:true , Message:'Successfull'});
+            const result = await createSession(Username);
+            result?
+                res.status(200).json({LoggedIn:result , Message:'Successfull LoggedIn'}):
+                res.status(200).json({LoggedIn:result , Message:'Error occured'});
         }else{
             res.status(200).json({LoggedIn:false,Message:'Password Incorrect'});
         }
@@ -48,10 +50,28 @@ const createSession = async (Username)=>{
 
     if(!getLoginData){
         const loginData = {Username , sceretkey , token};
-        await collection.insertOne(loginData);
+        try{
+            await collection.insertOne(loginData);
+            return true;
+        }catch(error){
+            console.log(error);
+            return false;
+            
+        }
+        
     }else{
-        const loginData = {sceretkey , token}
-        await collection.updateOne(Username , loginData);
+        //const loginData = {sceretkey , token}
+        const filter = {Username};
+        const updateDoc = {$set:{sceretkey , token}}
+        try{
+            await collection.updateOne(filter , updateDoc);
+            return true;
+        }catch(error){
+            console.log(error);
+            return false;
+            
+        }
+        
     }
     
 }
