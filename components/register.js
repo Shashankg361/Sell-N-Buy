@@ -1,7 +1,10 @@
 import axios from "axios";
+import { useState } from "react";
 import { useForm } from "react-hook-form"
 
-export default function Register(){
+export default function Register({data}){
+    const [mail , setMail] = useState('');
+    const [valid , setValid] = useState(false);
     const {register , formState:{errors} , handleSubmit} = useForm();
     const submit = async (detail)=>{
         //console.log(data);
@@ -12,6 +15,19 @@ export default function Register(){
         if(response.data){
             alert(response.data.Message);
         }
+    }
+    const getEmail = (event)=>{
+        setMail(event.target.value);
+    }
+
+    const validateMail = ()=>{
+        data.map((element)=>{
+            element.Email === mail ? setValid(true):setValid(false);
+        })
+    }
+
+    const mailFunc = (event)=>{
+        
     }
 
     return(
@@ -33,14 +49,18 @@ export default function Register(){
             </div>
             <div>
                 <label className="font-semibold text-lg p-2" id="Email">Email</label>
-                <div>
-                    <input placeholder="Email" type="email" className="p-2 border-4 rounded-lg" {...register("Email" ,
+                <div className="flex">
+                    <input placeholder="Email" type="email" onChange={getEmail} className="p-2 border-4 rounded-lg mr-2" {...register("Email" ,
                         {required:"This feild is required",
                         pattern:{
                             value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                             message:"Please enter valid email",
                         }
                         })}></input>
+                        <div className="flex">
+                            <button className="bg-gray-400 p-1 w-auto text-lg mr-1 font-semibold mt-3 cursor-pointer border-4 border-black rounded-2xl" onClick={validateMail}>Validate</button>
+                            <button className="bg-gray-400 p-1 w-auto text-lg font-semibold mt-3 cursor-pointer border-4 border-black rounded-2xl" onClick={mailFunc}>Verify</button>
+                        </div>
                         
                 </div>
                 {errors.Email && <h1 className="text-red-500" >{errors.Email.message}</h1>}
