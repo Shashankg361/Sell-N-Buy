@@ -1,7 +1,7 @@
 import Navbar from '@/components/navBar'
 import { Inter } from 'next/font/google'
 import { connectDB } from '@/database/handleDatabase'
-
+import { useEffect } from 'react'
 
 const inter = Inter({ subsets: ['latin'] })
 export default function Home({Message}) {

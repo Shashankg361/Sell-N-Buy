@@ -16,13 +16,18 @@ export default function Register({data}){
             alert(response.data.Message);
         }
     }
+
+    
     const getEmail = (event)=>{
         setMail(event.target.value);
     }
 
     const validateMail = ()=>{
-        data.map((element)=>{
+        const newdata = JSON.parse(data);
+        data && console.log("Mail ",mail);
+        newdata.map((element)=>{
             element.Email === mail ? setValid(true):setValid(false);
+            element.Email === mail ? console.log("matched", element.Email):console.log("not matched",element.Email, mail);
         })
     }
 
@@ -64,6 +69,7 @@ export default function Register({data}){
                         
                 </div>
                 {errors.Email && <h1 className="text-red-500" >{errors.Email.message}</h1>}
+                {valid ? <h1 className="text-red-500" >This email already exist</h1> : <h1 className="text-green-500" >You can use this email</h1>}
             </div>
             
             <label className="font-semibold text-lg p-2" id="Username">Username</label>
