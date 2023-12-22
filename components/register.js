@@ -40,11 +40,12 @@ export default function Register({data}){
         
     }
 
-    const mailFunc = async (event)=>{
+    const mailFunc = async ()=>{
         if(!valid){
-            const response = await axios.post("/api/verificationMail",getMail)
-            const Message = response.data;
-            alert(Message);
+            console.log(getMail);
+            const response = await axios.post("/api/verificationMail",{getMail})
+            const data = response.data;
+            alert(data.Message);
         }else{
             alert("Please use Valid Email");
         }
