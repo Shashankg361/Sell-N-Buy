@@ -1,13 +1,12 @@
 import axios from "axios";
 import { useState } from "react";
-import { useForm } from "react-hook-form"
+import { useForm, useWatch } from "react-hook-form"
 
 export default function Register({data}){
-    const [mail , setMail] = useState('');
     const [valid , setValid] = useState(false);
-    const {register , formState:{errors} , handleSubmit} = useForm();
+    const {register , formState:{errors} , handleSubmit ,watch} = useForm();
+
     const submit = async (detail)=>{
-        //console.log(data);
         const {Email , Username , Password} = detail;
         const now = new Date();
         const data = {Email , Username , Password ,now};
@@ -16,23 +15,24 @@ export default function Register({data}){
             alert(response.data.Message);
         }
     }
-
-    
-    const getEmail = (event)=>{
-        setMail(event.target.value);
-    }
+    const getMail = watch('Email');
 
     const validateMail = ()=>{
         const newdata = JSON.parse(data);
-        data && console.log("Mail ",mail);
-        newdata.map((element)=>{
-            element.Email === mail ? setValid(true):setValid(false);
-            element.Email === mail ? console.log("matched", element.Email):console.log("not matched",element.Email, mail);
-        })
+        setValid(newdata.some((element)=>{
+            if(element.Email === getMail){
+                return true;  
+            }
+            return false;
+        }));
     }
 
     const mailFunc = (event)=>{
-        
+        if(valid){
+            alert("Please use Valid Email");
+        }else{
+            console.log("send mail");
+        }
     }
 
     return(
@@ -55,7 +55,7 @@ export default function Register({data}){
             <div>
                 <label className="font-semibold text-lg p-2" id="Email">Email</label>
                 <div className="flex">
-                    <input placeholder="Email" type="email" onChange={getEmail} className="p-2 border-4 rounded-lg mr-2" {...register("Email" ,
+                    <input placeholder="Email" type="email" className="p-2 border-4 rounded-lg mr-2" {...register("Email" ,
                         {required:"This feild is required",
                         pattern:{
                             value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
@@ -80,6 +80,8 @@ export default function Register({data}){
             {errors.Password && <h1 className="text-red-500">This feild is required</h1>}
             <input className="bg-gray-400 p-1 w-auto text-lg font-semibold mt-3 cursor-pointer border-2 border-black rounded-2xl" type="submit"></input>
         </form>
+
+        <h1 className="text-black">value {valid}</h1>
         </>
     )
 }
