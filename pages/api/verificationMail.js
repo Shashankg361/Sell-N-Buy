@@ -1,6 +1,8 @@
 var nodemailer = require('nodemailer');
 export default async function verificationMail(req,res){
     var transporter = nodemailer.createTransport({
+        host:'smtp-relay.sendinblue.com',
+        port:587,
         service:'gamil',
         auth:{
             user:'shashankslocal@gmail.com',
