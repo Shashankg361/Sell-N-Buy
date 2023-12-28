@@ -1,24 +1,30 @@
 import axios from "axios";
-import { Mali } from "next/font/google";
+//import { Mali } from "next/font/google";
 import { useState } from "react";
-import { useForm, useWatch } from "react-hook-form"
+import { get, useForm, useWatch } from "react-hook-form"
 
 export default function Register({data}){
     let showError = true;
     const [valid , setValid] = useState(false);
+    //const [isFocused , setIsFocused] = useState(false);
     const {register , formState:{errors} , handleSubmit ,watch} = useForm();
 
     const submit = async (detail)=>{
-        if(!valid){
+       // console.log("isValid",valid);
+        if(valid){
             const {Email , Username , Password} = detail;
+            const Verified = false;
             const now = new Date();
-            const data = {Email , Username , Password ,now};
+            const data = {Email , Username , Password ,now ,Verified};
+            const verifyResponse = await axios.post("/api/verificationMail",{getMail});
+            const verifyData = verifyResponse.data;
+            alert(verifyData.Message);
             const response = await axios.post("/api/registration",data);
             if(response.data){
                 alert(response.data.Message);
             }
         }else{
-            alert("Enter email properly");
+            alert("Validate your E-mail");
         }
         
     }
@@ -40,16 +46,6 @@ export default function Register({data}){
         
     }
 
-    const mailFunc = async ()=>{
-        if(!valid){
-            console.log(getMail);
-            const response = await axios.post("/api/verificationMail",{getMail})
-            const data = response.data;
-            alert(data.Message);
-        }else{
-            alert("Please use Valid Email");
-        }
-    }
 
     return(
         <>
@@ -84,8 +80,9 @@ export default function Register({data}){
                         </div>
                         
                 </div>
+                
                 {errors.Email ? <h1 className="text-red-500" >{errors.Email.message}</h1> : showError = false}
-                {valid ? <h1 className="text-red-500" >This email already exist</h1> : <h1 className="text-green-500" >You can use this email</h1>}
+                {getMail && (valid ? <h1 className="text-red-500" >This email already exist</h1> : <h1 className="text-green-500" >You can use this email</h1>)}
             </div>
             
             <label className="font-semibold text-lg                                                                                                                                                                                                                  p-2" id="Username">Username</label>
