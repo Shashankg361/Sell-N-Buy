@@ -76,7 +76,7 @@ export default function Register({data}){
                         })}></input>
                         <div className="flex">
                             <button type="button" className="bg-gray-400 p-1 w-auto text-lg mr-1 font-semibold mt-3 cursor-pointer border-4 border-black rounded-2xl" onClick={validateMail}>Validate</button>
-                            <button type="button" className="bg-gray-400 p-1 w-auto text-lg font-semibold mt-3 cursor-pointer border-4 border-black rounded-2xl" onClick={mailFunc}>Verify</button>
+                            
                         </div>
                         
                 </div>
