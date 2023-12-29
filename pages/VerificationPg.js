@@ -3,11 +3,12 @@ import { useRouter } from "next/router";
 export default function Verify(){
 
     const router = useRouter();
-    const query = router.query;
-    console.log(query);
+    const {query} = router;
+    const mailId = query.id;
+    console.log(query.id);
 
     const handleClick = async()=>{
-        const response = await axios.post("/api/updateVerifyInDB",{query});
+        const response = await axios.post("/api/updateVerifyInDB",{mailId});
         const data = response.data;
         alert(data.message);
     }
