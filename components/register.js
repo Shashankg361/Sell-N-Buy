@@ -11,7 +11,7 @@ export default function Register({data}){
 
     const submit = async (detail)=>{
        // console.log("isValid",valid);
-        if(valid){
+        if(!valid){
             const {Email , Username , Password} = detail;
             const Verified = false;
             const now = new Date();

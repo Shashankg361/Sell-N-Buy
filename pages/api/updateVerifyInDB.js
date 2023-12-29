@@ -1,7 +1,7 @@
 import { client, connectDB } from "@/database/handleDatabase";
 
 export default async function UpdateDb(res,req){
-   const mail = req.query.id;
+   const mail = req.body.query;
 
     connectDB();
 
