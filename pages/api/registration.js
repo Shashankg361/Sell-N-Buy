@@ -3,12 +3,12 @@ const bcrypt = require('bcrypt');
 export default async function registration(req , res){
 
     if(req.method === 'POST'){
-        const {Email , Username , Password ,now} = req.body;
+        const {Email , Username , Password ,now,Verified} = req.body;
         console.log("registration pass ",Password);
         const db = client.db('User_Details');
         const collection = db.collection('Registration');
         const PasswordCred = getHashedPass(Password);
-        const data = {Email , Username , PasswordCred ,now};
+        const data = {Email , Username , PasswordCred ,now ,Verified};
         try{
             await collection.insertOne(data);
             res.status(200).json({Message:"Successfully registered"});

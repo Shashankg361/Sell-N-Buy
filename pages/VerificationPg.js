@@ -10,7 +10,7 @@ export default function Verify(){
     const handleClick = async()=>{
         const response = await axios.post("/api/updateVerifyInDB",{mailId});
         const data = response.data;
-        alert(data.message);
+        alert(data.Message);
     }
     
     return(

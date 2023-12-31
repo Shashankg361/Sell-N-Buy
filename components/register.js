@@ -5,9 +5,9 @@ import { get, useForm, useWatch } from "react-hook-form"
 
 export default function Register({data}){
     let showError = true;
-    const [valid , setValid] = useState(false);
+    const [valid , setValid] = useState(true);
     //const [isFocused , setIsFocused] = useState(false);
-    const {register , formState:{errors} , handleSubmit ,watch} = useForm();
+    const {register , formState:{errors} , handleSubmit ,watch , reset} = useForm();
 
     const submit = async (detail)=>{
        // console.log("isValid",valid);
@@ -16,34 +16,44 @@ export default function Register({data}){
             const Verified = false;
             const now = new Date();
             const data = {Email , Username , Password ,now ,Verified};
-            const verifyResponse = await axios.post("/api/verificationMail",{getMail});
-            const verifyData = verifyResponse.data;
-            alert(verifyData.Message);
-            const response = await axios.post("/api/registration",data);
-            if(response.data){
-                alert(response.data.Message);
+            try{
+                const verifyResponse = await axios.post("/api/verificationMail",{getMail});
+                const verifyData = verifyResponse.data;
+                alert(verifyData.Message);
+            }catch(error){
+                alert("Error occurecd while sending verification email");
+            }
+            try{
+                const response = await axios.post("/api/registration",data);
+                response.data && alert(response.data.Message);
+                setValid(true);
+            }catch(error){
+                alert("Error occured while registration");
             }
         }else{
             alert("Validate your E-mail");
         }
-        
+        reset();
     }
     const getMail = watch('Email');
 
     const validateMail = ()=>{
-        if(showError){
-            alert("Please enter correct email");
+        if(getMail !== ''){
+            if(showError){
+                alert("Please enter correct email");
+            }else{
+                console.log("enter");
+                const newdata = JSON.parse(data);
+                setValid(newdata.some((element)=>{
+                    if(element.Email === getMail){
+                        return true;  
+                    }
+                    return false;
+                }));
+            }
         }else{
-            console.log("enter");
-            const newdata = JSON.parse(data);
-            setValid(newdata.some((element)=>{
-                if(element.Email === getMail){
-                    return true;  
-                }
-                return false;
-            }));
+            alert("Enter proper email");
         }
-        
     }
 
 
@@ -67,7 +77,7 @@ export default function Register({data}){
             <div>
                 <label className="font-semibold text-lg p-2" id="Email">Email</label>
                 <div className="flex">
-                    <input placeholder="Email" type="email" className="p-2 border-4 rounded-lg mr-2" {...register("Email" ,
+                    <input placeholder="Email"  className="p-2 border-4 rounded-lg mr-2" {...register("Email" ,
                         {required:"This feild is required",
                         pattern:{
                             value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
