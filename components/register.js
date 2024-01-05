@@ -1,10 +1,12 @@
 import axios from "axios";
 //import { Mali } from "next/font/google";
 import { useState } from "react";
+import Link from "next/link";
 import { get, useForm, useWatch } from "react-hook-form"
 
 export default function Register({data}){
     let showError = true;
+    const [showPaymentBtn , setShowPaymentBtn] = useState(false);
     const [valid , setValid] = useState(true);
     //const [isFocused , setIsFocused] = useState(false);
     const {register , formState:{errors} , handleSubmit ,watch , reset} = useForm();
@@ -74,7 +76,7 @@ export default function Register({data}){
                     
                 </div>
             </div>
-            <div>
+            <div className="mt-4">
                 <label className="font-semibold text-lg p-2" id="Email">Email</label>
                 <div className="flex">
                     <input placeholder="Email"  className="p-2 border-4 rounded-lg mr-2" {...register("Email" ,
@@ -95,13 +97,24 @@ export default function Register({data}){
                 {getMail && (valid ? <h1 className="text-red-500" >This email already exist</h1> : <h1 className="text-green-500" >You can use this email</h1>)}
             </div>
             
-            <label className="font-semibold text-lg                                                                                                                                                                                                                  p-2" id="Username">Username</label>
-            <input placeholder="Username" className="p-2 border-4 rounded-lg" {...register("Username" ,{required:"This feild is required",})}></input>
-            {errors.Username && <h1 className="text-red-500">This feild is required</h1>}
-            <label className="font-semibold text-lg p-2" id="Password">Password</label>
+            <label className="font-semibold text-lg p-2 flex mt-4" id="ShopKeeper"><div>
+                    <span className="mr-6">Shopkeeper:</span>
+                </div>
+                <div className="flex justify-between w-32">
+                    <div><input className="ml-1 mr-1" type="radio" value="Yes" {...register("ShopKeeper",{required:"please Select any one option"})} onChange={()=>setShowPaymentBtn(true)}></input>
+                    <span className="font-normal">yes</span></div>
+                    <div><input className="ml-1 mr-1" type="radio" value="No" {...register("ShopKeeper",{required:"please Select any one option"})} onChange={()=>setShowPaymentBtn(false)}></input>
+                    <span className="font-normal">No</span></div>
+                </div>
+            </label>
+            {errors.ShopKeeper && <h1 className="text-red-500">{errors.ShopKeeper.message}</h1>}
+
+            {showPaymentBtn && <Link href="https://buy.stripe.com/test_00g00hdhV8Bkdmo8ww" ><button type="button" className="bg-gray-400 p-1 w-auto text-lg font-semibold mt-3 cursor-pointer border-2 border-black rounded-2xl mt-4"  >Pay 100 Rs for ShopKeeper account</button></Link>}
+
+            <label className="font-semibold text-lg p-2 mt-4" id="Password">Password</label>
             <input type="password" className="p-2 border-4 rounded-lg" placeholder="Password" {...register("Password" ,{required:"This feild is required" , minLength:6})}></input>
             {errors.Password && <h1 className="text-red-500">This feild is required</h1>}
-            <input className="bg-gray-400 p-1 w-auto text-lg font-semibold mt-3 cursor-pointer border-2 border-black rounded-2xl" type="submit"></input>
+            <input className="bg-gray-400 p-1 w-auto text-lg font-semibold mt-3 cursor-pointer border-2 border-black rounded-2xl mt-4" type="submit"></input>
         </form>
         </>
     )

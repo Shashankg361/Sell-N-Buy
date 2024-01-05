@@ -9,9 +9,9 @@ export default function Login(){
     const {register , handleSubmit ,formState: {errors}} = useForm();
     const submit = async (data)=>{ 
         console.log(data);
-        const {Username,Password} = data;
-        console.log(Username,Password);
-        const response = await axios.post("/api/login",{Username,Password});
+        const {Email,Password} = data;
+        console.log(Email,Password);
+        const response = await axios.post("/api/login",{Email,Password});
         const Resdata = response.data;
         console.log("message",Resdata.Message , Resdata.LoggedIn);
         setLoggedIn(Resdata.LoggedIn);
@@ -21,9 +21,9 @@ export default function Login(){
     return(
         <>
         <form className="text-black flex flex-col mt-10 p-5" onSubmit={handleSubmit(submit)}>
-            <label className="font-semibold text-lg p-2" id="Username">Username</label>
-            <input placeholder="Username" className="p-2 border-4 rounded-lg" {...register("Username" ,{required:"This feild is required"})}></input>
-            {errors.Username && <h1>This feild is required</h1>}
+            <label className="font-semibold text-lg p-2" id="Email">Email</label>
+            <input placeholder="Email" className="p-2 border-4 rounded-lg" {...register("Email" ,{required:"This feild is required"})}></input>
+            {errors.Email && <h1>This feild is required</h1>}
             <label className="font-semibold text-lg p-2" id="Password">Password</label>
             <input type="password" className="p-2 border-4 rounded-lg" placeholder="Password" {...register("Password" ,{required:"This feild is required" , minLength:6})}></input>
             {errors.Password && <h1>This feild is required</h1>}

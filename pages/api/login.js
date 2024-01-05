@@ -5,9 +5,9 @@ const jwt = require('jsonwebtoken');
 
 export default async function login(req, res){
     if(req.method === 'POST'){
-        const {Username,Password} = req.body;
+        const {Email,Password} = req.body;
         console.log(Password);
-        const PasswordCred = await getPassword(Username);
+        const PasswordCred = await getPassword(Email);
         //console.log("Paassssss : ",hashedPassword);
     
         const matched = calculation(PasswordCred,Password);
@@ -24,10 +24,10 @@ export default async function login(req, res){
     }
 }
 
-const getPassword = async (UserName)=>{
+const getPassword = async (Email)=>{
     const db = client.db('User_Details');
     const collection = db.collection('Registration');
-    const query = {Username : UserName};
+    const query = {Email : Email};
     const data = await collection.findOne(query);
     console.log("data",data);
     return data.PasswordCred;
@@ -41,15 +41,15 @@ const calculation = (PasswordCred,Password)=>{
     return matched;
 }
 
-const createSession = async (Username)=>{
+const createSession = async (Email)=>{
     const sceretkey = crypto.randomBytes(32).toString('hex'); 
-    const token = jwt.sign({Username},sceretkey , {expiresIn : '5h'});
+    const token = jwt.sign({Email},sceretkey , {expiresIn : '5h'});
     const db = client.db('User_Details');
     const collection = db.collection('Login_Dets');
-    const getLoginData = await collection.find(Username);
+    const getLoginData = await collection.findOne(Email);
 
     if(!getLoginData){
-        const loginData = {Username , sceretkey , token};
+        const loginData = {Email , sceretkey , token};
         try{
             await collection.insertOne(loginData);
             return true;
@@ -61,7 +61,7 @@ const createSession = async (Username)=>{
         
     }else{
         //const loginData = {sceretkey , token}
-        const filter = {Username};
+        const filter = {Email};
         const updateDoc = {$set:{sceretkey , token}}
         try{
             await collection.updateOne(filter , updateDoc);

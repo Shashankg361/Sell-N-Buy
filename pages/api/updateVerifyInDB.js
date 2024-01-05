@@ -15,7 +15,6 @@ export default async function UpdateDb(req,res){
         );
         res.status(200).json({Message:'Verified'});
     }catch(error){
-        //console.error(error);
         res.json({Message:'Error occured'});
     }
     
