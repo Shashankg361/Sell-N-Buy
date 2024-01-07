@@ -13,6 +13,7 @@ export default function Login(){
         //console.log(Email,Password);
         const response = await axios.post("/api/login",{Email,Password});
         const Resdata = response.data;
+        alert(Resdata.Message);
         Resdata.LoggedIn && router.push('/');
         //console.log("message",Resdata.Message , Resdata.LoggedIn);
         setLoggedIn(Resdata.LoggedIn);

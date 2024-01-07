@@ -2,11 +2,15 @@ import { client } from "@/database/handleDatabase";
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
+const db = client.db('User_Details');
 
 export default async function login(req, res){
     if(req.method === 'POST'){
         const {Email,Password} = req.body;
         console.log(Password);
+
+        !checkVerified(Email) && res.status(200).json({LoggedIn:false , Message:'Please verify you email(check mail)'}) ;
+        
         const PasswordCred = await getPassword(Email);
         //console.log("Paassssss : ",hashedPassword);
     
@@ -24,8 +28,15 @@ export default async function login(req, res){
     }
 }
 
+const checkVerified = async (Email)=>{
+    const collection = db.collection('Registration');
+    const query = {Email : Email};
+    const data = await collection.findOne(query);
+    return data.Verified;
+}
+
 const getPassword = async (Email)=>{
-    const db = client.db('User_Details');
+    
     const collection = db.collection('Registration');
     const query = {Email : Email};
     const data = await collection.findOne(query);
@@ -44,7 +55,7 @@ const calculation = (PasswordCred,Password)=>{
 const createSession = async (Email)=>{
     const sceretkey = crypto.randomBytes(32).toString('hex'); 
     const token = jwt.sign({Email},sceretkey , {expiresIn : '5h'});
-    const db = client.db('User_Details');
+    //const db = client.db('User_Details');
     const collection = db.collection('Login_Dets');
     try{
         const getLoginData = await collection.findOne({Email:Email});

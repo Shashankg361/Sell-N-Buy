@@ -42,12 +42,12 @@ export async function getServerSideProps(){
     try{
         const response = await collection.find({}).toArray();
         data = JSON.stringify(response);
-        console.log(data);
+        //console.log(data);
         
     }catch(error){
         console.log("Error occured:",error);
     }
     return{
-            props:{data},
+          props:{data},
         }
 }
