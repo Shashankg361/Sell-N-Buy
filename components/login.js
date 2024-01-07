@@ -8,15 +8,16 @@ export default function Login(){
     const {LoggedIn , setLoggedIn} = useContext(pool);
     const {register , handleSubmit ,formState: {errors}} = useForm();
     const submit = async (data)=>{ 
-        console.log(data);
+       //console.log(data);
         const {Email,Password} = data;
-        console.log(Email,Password);
+        //console.log(Email,Password);
         const response = await axios.post("/api/login",{Email,Password});
         const Resdata = response.data;
-        console.log("message",Resdata.Message , Resdata.LoggedIn);
+        Resdata.LoggedIn && router.push('/');
+        //console.log("message",Resdata.Message , Resdata.LoggedIn);
         setLoggedIn(Resdata.LoggedIn);
     }
-    console.log(LoggedIn);
+    LoggedIn && console.log("Login",LoggedIn);
     
     return(
         <>

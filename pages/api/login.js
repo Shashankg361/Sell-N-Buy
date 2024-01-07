@@ -13,7 +13,7 @@ export default async function login(req, res){
         const matched = calculation(PasswordCred,Password);
         console.log('matched',matched);
         if(matched){
-            const result = await createSession(Username);
+            const result = await createSession(Email);
             result?
                 res.status(200).json({LoggedIn:result , Message:'Successfull LoggedIn'}):
                 res.status(200).json({LoggedIn:result , Message:'Error occured'});
@@ -46,32 +46,38 @@ const createSession = async (Email)=>{
     const token = jwt.sign({Email},sceretkey , {expiresIn : '5h'});
     const db = client.db('User_Details');
     const collection = db.collection('Login_Dets');
-    const getLoginData = await collection.findOne(Email);
+    try{
+        const getLoginData = await collection.findOne({Email:Email});
 
-    if(!getLoginData){
-        const loginData = {Email , sceretkey , token};
-        try{
-            await collection.insertOne(loginData);
-            return true;
-        }catch(error){
-            console.log(error);
-            return false;
+        if(getLoginData == null){
+            const loginData = {Email , sceretkey , token};
+            try{
+                await collection.insertOne(loginData);
+                return true;
+            }catch(error){
+                console.log("Error occured while inserting",error);
+                return false;
+                
+            }
+        }else{
+            //const loginData = {sceretkey , token}
+            const filter = {Email};
+            const updateDoc = {$set:{sceretkey , token}}
+            try{
+                await collection.updateOne(filter , updateDoc);
+                return true;
+            }catch(error){
+                console.log("Error occured while updating",error);
+                return false;
+                
+            }
             
         }
-        
-    }else{
-        //const loginData = {sceretkey , token}
-        const filter = {Email};
-        const updateDoc = {$set:{sceretkey , token}}
-        try{
-            await collection.updateOne(filter , updateDoc);
-            return true;
-        }catch(error){
-            console.log(error);
-            return false;
-            
-        }
-        
+    }catch(err){
+        console.log("Error occured while finding the document else doc not found",err);
     }
+    
+
+    
     
 }
