@@ -12,16 +12,17 @@ export default function Register({data}){
     const submit = async (detail)=>{
        // console.log("isValid",valid);
         if(!valid){
-            const {Email , Username , Password} = detail;
+            const {Email , FirstName ,LastName , Password} = detail;
             const Verified = false;
             const now = new Date();
-            const data = {Email , Username , Password ,now ,Verified};
+            const data = {Email , FirstName ,LastName , Password ,now ,Verified};
             try{
-                const verifyResponse = await axios.post("/api/verificationMail",{getMail});
+                console.log("mail",Email);
+                const verifyResponse = await axios.post("/api/verificationMail",{Email});
                 const verifyData = verifyResponse.data;
-                alert(verifyData.Message);
+                alert(verifyData.Message+" (You can send verification mail again at login page tab)");
             }catch(error){
-                alert("Error occurecd while sending verification email");
+                alert("Error occurecd while sending verification email (You can send verification mail again at login page tab)");
             }
             try{
                 const response = await axios.post("/api/registration",data);
@@ -30,10 +31,11 @@ export default function Register({data}){
             }catch(error){
                 alert("Error occured while registration");
             }
+            reset();
         }else{
             alert("Validate your E-mail");
         }
-        reset();
+        
     }
     const getMail = watch('Email');
     const newdata = JSON.parse(data);
@@ -46,6 +48,7 @@ export default function Register({data}){
             }
             return false;  
         }));
+        console.log("enter to setvalid");
     }
 
  

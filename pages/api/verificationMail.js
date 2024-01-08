@@ -13,11 +13,11 @@ export default async function verificationMail(req,res){
 
     if(req.method === 'POST'){
         const data = req.body;
-        console.log("Mail",data.getMail);
-        const link = `http://localhost:3000/VerificationPg?id=${data.getMail}`;
+        console.log("Mail",data.Email);
+        const link = `http://localhost:3000/VerificationPg?id=${data.Email}`;
         const mailOptions = {
             from:'shashankslocal@gmail.com',
-            to:data.getMail,
+            to:data.Email,
             subject:'Verification mail by AaOo',
             html : `<html>
                     <body>
