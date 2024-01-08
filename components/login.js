@@ -24,7 +24,12 @@ export default function Login(){
         <>
         <form className="text-black flex flex-col mt-10 p-5" onSubmit={handleSubmit(submit)}>
             <label className="font-semibold text-lg p-2" id="Email">Email</label>
-            <input placeholder="Email" className="p-2 border-4 rounded-lg" {...register("Email" ,{required:"This feild is required"})}></input>
+            <input placeholder="Email" className="p-2 border-4 rounded-lg" {...register("Email" ,{required:"This feild is required",
+                pattern:{
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                    message:"Please enter valid email",
+                }
+            })}></input>
             {errors.Email && <h1>This feild is required</h1>}
             <label className="font-semibold text-lg p-2" id="Password">Password</label>
             <input type="password" className="p-2 border-4 rounded-lg" placeholder="Password" {...register("Password" ,{required:"This feild is required" , minLength:6})}></input>

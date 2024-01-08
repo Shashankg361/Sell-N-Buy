@@ -1,13 +1,31 @@
 import axios from "axios";
 //import { Mali } from "next/font/google";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { get, useForm, useWatch } from "react-hook-form"
+import { get, useForm, useWatch } from "react-hook-form";
+//import WebSocket from "ws";
 
 export default function Register({data}){
 
     const [valid , setValid] = useState(true);
     const {register , formState:{errors} , handleSubmit ,watch , reset} = useForm();
+
+    useEffect(()=>{
+        const socket = new WebSocket('ws://localhost:3000/api/socket.js');
+        console.log("entered");
+        socket.onopen = ()=>{
+            console.log('socket connected');
+        };
+
+        socket.onmessage = (event)=>{
+            const newData = JSON.parse(event.data);
+            data = [...data,newData];
+            console.log("I'm from ws frontend",newData);
+        }
+        // return ()=>{
+        //     socket.close();
+        // }
+    },[])
 
     const submit = async (detail)=>{
        // console.log("isValid",valid);
@@ -17,7 +35,7 @@ export default function Register({data}){
             const now = new Date();
             const data = {Email , FirstName ,LastName , Password ,now ,Verified};
             try{
-                console.log("mail",Email);
+                //console.log("mail",Email);
                 const verifyResponse = await axios.post("/api/verificationMail",{Email});
                 const verifyData = verifyResponse.data;
                 alert(verifyData.Message+" (You can send verification mail again at login page tab)");
@@ -48,7 +66,7 @@ export default function Register({data}){
             }
             return false;  
         }));
-        console.log("enter to setvalid");
+        //console.log("enter to setvalid");
     }
 
  
