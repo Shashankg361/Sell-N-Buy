@@ -48,6 +48,6 @@ export async function getServerSideProps(){
         console.log("Error occured:",error);
     }
     return{
-          props:{data},
+            props:{data},
         }
 }

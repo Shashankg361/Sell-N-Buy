@@ -3,10 +3,17 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { get, useForm, useWatch } from "react-hook-form";
+import { useRouter } from "next/router";
 //import WebSocket from "ws";
 
+
 export default function Register({data}){
-    const [newdata , setNewdata] = useState(JSON.parse(data));
+    const router = new useRouter();
+    const [newdata , setNewdata] = useState(JSON.parse(data)); 
+    // useEffect(()=>{
+    // setNewdata();
+    // },[data]);
+
     const [valid , setValid] = useState(null);
 
     useEffect(()=>{
@@ -26,7 +33,7 @@ export default function Register({data}){
         }
     },[]);
 
-    const {register , formState:{errors} , handleSubmit ,watch , reset} = useForm();
+    const {register , formState:{errors} ,setValue, handleSubmit} = useForm();
     const submit = async (detail)=>{
        // console.log("isValid",valid);
         if(!valid){
@@ -46,17 +53,26 @@ export default function Register({data}){
                 const response = await axios.post("/api/registration",data);
                 response.data && alert(response.data.Message);
                 setValid(true);
+                //router.push('/login');
             }catch(error){
                 alert("Error occured while registration");
             }
-            reset();
+
+            setValue(FirstName,'');
+            setValue(LastName,'');
+            setValue(Email,'');
+            setValue(Password,'');
         }else{
             alert("Validate your E-mail");
         }
         
     }
     //const getMail = watch('Email');
-    console.log("updated",newdata);
+    useEffect(()=>{
+        console.log("updated",newdata);
+    },[newdata])
+    
+
     const validateMail = (event)=>{
         const E_mail = event.target.value.trim();
         setValid(newdata.some((element)=>{
@@ -67,7 +83,6 @@ export default function Register({data}){
         }));
         //console.log("enter to setvalid");
     }
-
  
     return(
         <>
@@ -83,13 +98,12 @@ export default function Register({data}){
                         <input placeholder="LastName" type="text" className="p-2 border-4 rounded-lg" {...register("LastName" ,{required:"This feild is required"})}></input>
                         {errors.LastName && <h1 className="text-red-500">This feild is required</h1>}
                     </div>
-                    
                 </div>
             </div>
             <div className="mt-4">
                 <label className="font-semibold text-lg p-2" id="Email">Email</label>
                 <div className="flex">
-                    <input placeholder="Email"  className="p-2 border-4 rounded-lg mr-2" {...register("Email" ,
+                    <input placeholder="Email" className="p-2 border-4 rounded-lg mr-2" {...register("Email" ,
                         {required:"This feild is required",
                         pattern:{
                             value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
@@ -103,7 +117,7 @@ export default function Register({data}){
                 {errors.Email && <h1 className="text-red-500" >{errors.Email.message}</h1>}
                 {valid ? <h1 className="text-red-500" >This email already exist</h1> : <h1 className="text-green-500" >You can use this email</h1>}
             </div>
-
+            
             <label className="font-semibold text-lg p-2 mt-4" id="Password">Password</label>
             <input type="password" className="p-2 border-4 rounded-lg" placeholder="Password" {...register("Password" ,{required:"This feild is required" , minLength:6})}></input>
             {errors.Password && <h1 className="text-red-500">This feild is required</h1>}
