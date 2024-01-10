@@ -37,7 +37,7 @@ export default function Register({data}){
     const submit = async (detail)=>{
        // console.log("isValid",valid);
         if(!valid){
-            const {Email , FirstName ,LastName , Password} = detail;
+            const {Email , FirstName ,LastName , Password} = detail;            
             const Verified = false;
             const now = new Date();
             const data = {Email , FirstName ,LastName , Password ,now ,Verified};
@@ -57,11 +57,10 @@ export default function Register({data}){
             }catch(error){
                 alert("Error occured while registration");
             }
-
-            setValue(FirstName,'');
-            setValue(LastName,'');
-            setValue(Email,'');
-            setValue(Password,'');
+            setValue('FirstName','');
+            setValue('LastName','');
+            setValue('Email','');
+            setValue('Password','');
         }else{
             alert("Validate your E-mail");
         }
