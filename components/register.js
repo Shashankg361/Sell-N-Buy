@@ -6,9 +6,8 @@ import { get, useForm, useWatch } from "react-hook-form";
 //import WebSocket from "ws";
 
 export default function Register({data}){
-
-    const [valid , setValid] = useState(true);
-    const {register , formState:{errors} , handleSubmit ,watch , reset} = useForm();
+    const [newdata , setNewdata] = useState(JSON.parse(data));
+    const [valid , setValid] = useState(null);
 
     useEffect(()=>{
         const io = new WebSocket('ws://localhost:8080');
@@ -17,16 +16,17 @@ export default function Register({data}){
         }
 
         io.onmessage = (message)=>{
-            const newdata = JSON.parse(message.data);
-            console.log(newdata);
-            data = [...data,newdata.fulldocument];
+            const newAdded = JSON.parse(message.data);
+            console.log("newly",newAdded);
+            setNewdata([...newdata,newAdded.fullDocument]);
         }
 
         io.onclose = ()=>{
             console.log('disconnected to websocket');
         }
-    },[])
+    },[]);
 
+    const {register , formState:{errors} , handleSubmit ,watch , reset} = useForm();
     const submit = async (detail)=>{
        // console.log("isValid",valid);
         if(!valid){
@@ -55,9 +55,8 @@ export default function Register({data}){
         }
         
     }
-    const getMail = watch('Email');
-    const newdata = JSON.parse(data);
-
+    //const getMail = watch('Email');
+    console.log("updated",newdata);
     const validateMail = (event)=>{
         const E_mail = event.target.value.trim();
         setValid(newdata.some((element)=>{
@@ -102,7 +101,7 @@ export default function Register({data}){
                 </div>
                 
                 {errors.Email && <h1 className="text-red-500" >{errors.Email.message}</h1>}
-                {getMail && (valid ? <h1 className="text-red-500" >This email already exist</h1> : <h1 className="text-green-500" >You can use this email</h1>)}
+                {valid ? <h1 className="text-red-500" >This email already exist</h1> : <h1 className="text-green-500" >You can use this email</h1>}
             </div>
 
             <label className="font-semibold text-lg p-2 mt-4" id="Password">Password</label>
