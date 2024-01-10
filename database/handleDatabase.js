@@ -1,11 +1,13 @@
-import { MongoClient } from "mongodb";
-import { config } from "dotenv";
+//import { MongoClient } from "mongodb";
+const {MongoClient} = require('mongodb')
+require('dotenv').config({path:'./.env.local'});
+//import { config } from "dotenv";
 
 
 const uri = `mongodb+srv://shashankg361:${process.env.PASSWORD}@cluster0.dpbfj49.mongodb.net/`;
-export const client = new MongoClient(uri ,{ useNewUrlParser: true, useUnifiedTopology: true });
+const client = new MongoClient(uri);
 
-export const connectDB = async()=>{
+const connectDB = async()=>{
     try{
         await client.connect();
         console.log("Connected successfully");
@@ -14,3 +16,7 @@ export const connectDB = async()=>{
     }
 }
 
+module.exports = {
+    client,
+    connectDB,
+}

@@ -11,20 +11,20 @@ export default function Register({data}){
     const {register , formState:{errors} , handleSubmit ,watch , reset} = useForm();
 
     useEffect(()=>{
-        const socket = new WebSocket('ws://localhost:3000/api/socket.js');
-        console.log("entered");
-        socket.onopen = ()=>{
-            console.log('socket connected');
-        };
-
-        socket.onmessage = (event)=>{
-            const newData = JSON.parse(event.data);
-            data = [...data,newData];
-            console.log("I'm from ws frontend",newData);
+        const io = new WebSocket('ws://localhost:8080');
+        io.onopen = ()=>{
+            console.log('Websocket connected');
         }
-        // return ()=>{
-        //     socket.close();
-        // }
+
+        io.onmessage = (message)=>{
+            const newdata = JSON.parse(message.data);
+            console.log(newdata);
+            data = [...data,newdata.fulldocument];
+        }
+
+        io.onclose = ()=>{
+            console.log('disconnected to websocket');
+        }
     },[])
 
     const submit = async (detail)=>{

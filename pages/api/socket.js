@@ -1,36 +1,49 @@
-import { client } from "@/database/handleDatabase";
-import { ChangeStream } from "mongodb";
-import { Server } from "ws";
+// import { client } from "@/database/handleDatabase";
+// import { ChangeStream } from "mongodb";
+// import { Server } from "ws";
 
-export default async function socket(req, res){
-    let newData;
-    console.log("called");
-    const wss = new Server({noServer: true});
+// export default async function socket(req, res){
+//     let newData;
+//     console.log("called");
+    
+//     const wss = new Server({noServer: true});
 
-    wss.on('connection',(ws)=>{
-        console.log("Connected");
-    })
-    // const db = client.db('User_Details');
-    // const collection = db.collection('Registration');
+//     wss.on('connection',(ws)=>{
+//         console.log(ws);
+//     });
+//     try{
+//         const db = client.db('User_Details');
+//         const collection = db.collection('Registration');
+//         const changeStream = collection.watch();
+//         changeStream.on('change',(newData)=>{
+//             console.log("change",newData);
+//             wss.emit('change',newData);
+//         })
+//     }catch(error){
+//         console.log(error);
+//     }
+//     //socket.emit("change",newData);
+//     // const db = client.db('User_Details');
+//     // const collection = db.collection('Registration');
 
-    // const changeStream  = collection.watch();
+//     // const changeStream  = collection.watch();
 
-    // changeStream.on('change',(change)=>{
-    //     if(change.operationType == "insert"){
-    //         newData = change.fullDocument;
-    //         console.log("I'm from ws backend",newData);
-    //     }
-    //     wss.clients.forEach((client)=>{
-    //         if(client.readyState === WebSocket.OPEN){
-    //             client.send(JSON.stringify(newData));
-    //         }
-    //     });
-    // });    
+//     // changeStream.on('change',(change)=>{
+//     //     if(change.operationType == "insert"){
+//     //         newData = change.fullDocument;
+//     //         console.log("I'm from ws backend",newData);
+//     //     }
+//     //     wss.clients.forEach((client)=>{
+//     //         if(client.readyState === WebSocket.OPEN){
+//     //             client.send(JSON.stringify(newData));
+//     //         }
+//     //     });
+//     // });    
 
-    req.wss = wss;
-    wss.handleUpgrade(req, req.socket, Buffer.alloc(0),(ws)=>{
-        wss.emit('connection',we,req);
-    });
+//     req.wss = wss;
+//     wss.handleUpgrade(req, req.socket, Buffer.alloc(0),(ws)=>{
+//         wss.emit('connection',we,req);
+//     });
 
-    res.end('WebSocket server initiated');
-}
+//     res.end('WebSocket server initiated');
+// }
