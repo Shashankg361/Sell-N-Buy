@@ -33,19 +33,21 @@ export default async function login(req, res){
         }else if(check === null){
             res.status(200).json({LoggedIn:false , Message:'Email incorrect'});
         }else{
-            const PasswordCred = await getPassword(Email);
-            
-            //console.log("Paassssss : ",hashedPassword);
-        
+            const data = await getPassword(Email);
+            const PasswordCred = data.PasswordCred;
+            const sendData = {
+                Name:data.FirstName + data.LastName,
+                Email:data.Email
+            }
             const matched = calculation(PasswordCred,Password);
-            console.log('matched',matched);
+            //console.log('matched',matched);
             if(matched){
                 const result = await createSession(Email);
                 result?
-                    res.status(200).json({LoggedIn:result , Message:'Successfull LoggedIn'}):
-                    res.status(200).json({LoggedIn:result , Message:'Error occured'});
+                    res.status(200).json({LoggedIn:result , Message:'Successfull LoggedIn' , Data:sendData}):
+                    res.status(200).json({LoggedIn:result , Message:'Error occured', Data:null});
             }else{
-                res.status(200).json({LoggedIn:false,Message:'Password Incorrect'});
+                res.status(200).json({LoggedIn:false,Message:'Password Incorrect', Data:null});
             }
         }
         //res.status(200).json({message:'Executed'});
@@ -61,7 +63,7 @@ const getPassword = async (Email)=>{
     const query = {Email : Email};
     const data = await collection.findOne(query);
     console.log("data",data);
-    return data.PasswordCred;
+    return data;
 }
 
 const calculation = (PasswordCred,Password)=>{
@@ -100,9 +102,7 @@ const createSession = async (Email)=>{
             }catch(error){
                 console.log("Error occured while updating",error);
                 return false;
-                
             }
-            
         }
     }catch(err){
         console.log("Error occured while finding the document else doc not found",err);

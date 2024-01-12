@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 export default function Login(){
     const router = useRouter();
-    const {LoggedIn , setLoggedIn} = useContext(pool);
+    const {LoggedIn , setLoggedIn , userData , setUserData} = useContext(pool);
     const {register , handleSubmit ,formState: {errors}} = useForm();
     const submit = async (data)=>{ 
        //console.log(data);
@@ -13,6 +13,7 @@ export default function Login(){
         //console.log(Email,Password);
         const response = await axios.post("/api/login",{Email,Password});
         const Resdata = response.data;
+        setUserData(Resdata.sendData);
         alert(Resdata.Message);
         Resdata.LoggedIn && router.push('/');
         //console.log("message",Resdata.Message , Resdata.LoggedIn);
