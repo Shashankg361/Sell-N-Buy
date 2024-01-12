@@ -36,8 +36,8 @@ export default async function login(req, res){
             const data = await getPassword(Email);
             const PasswordCred = data.PasswordCred;
             const sendData = {
-                Name:data.FirstName + data.LastName,
-                Email:data.Email
+                Name:data.FirstName +" "+ data.LastName,
+                Email:data.Email,
             }
             const matched = calculation(PasswordCred,Password);
             //console.log('matched',matched);
