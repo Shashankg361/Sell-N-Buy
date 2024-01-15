@@ -7,7 +7,9 @@ import Shopkeeper from "@/components/shopkeeper";
 
 export default function Account(){
     const [route , setRoute] = useState('Profile');
-    const {useerData} = useContext(pool);
+    const {userData} = useContext(pool);
+
+    let shopkeeperBtn = (userData.Shopkeeper) ? '':'bg-gray-300 rounded-lg border-1 p-1 text-black';
 
     const show = ()=>{
         switch(route){
@@ -15,7 +17,7 @@ export default function Account(){
                 return <Profile />
             case 'Dashboard':
                 return <Dashboard />
-            case 'Logout':
+            case 'Shop':
                 return <Shopkeeper />
         }
     }
@@ -27,7 +29,7 @@ export default function Account(){
                 <ul className="mt-5">
                     <li><div onClick={()=>setRoute('Profile')} className="cursor-pointer font-semibold text-xl">Profile</div></li>
                     <li><div onClick={()=>setRoute('Dashboard')} className="cursor-pointer font-semibold text-xl"> Dashboard</div></li>
-                    <li><div onClick={()=>setRoute('Logout')} className={`cursor-pointer font-semibold text-xl ${!useerData && 'bg-gray-300 rounded-lg border-1 p-1 text-black'}`}>Shopkeeper</div></li>
+                    <li><div onClick={()=>setRoute('Shop')} className={`cursor-pointer font-semibold text-xl ${shopkeeperBtn}`}>Shopkeeper</div></li>
                 </ul>
             </div>
             <div className="h-screen bg-gray-100 flex-auto p-1 bg- text-black overflow-y-hidden">
