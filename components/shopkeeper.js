@@ -76,7 +76,8 @@ function RemoveLock(){
         if(!files){
             alert("please enter file");
         }else{
-            const response = await axios.post('/api/uploadtocloud',files);
+            console.log(files);
+            const response = await axios.post('/api/uploadtocloud',{files:files});
             const data = response.data;
             console.log(data.message);
         }
