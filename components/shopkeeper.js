@@ -1,6 +1,7 @@
 import { pool } from "@/pages/_app"
 import { faLock } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import axios from "axios";
 import { Input } from "postcss";
 import { useContext, useEffect, useRef, useState } from "react"
 
@@ -48,6 +49,7 @@ function ShowLock(){
 function RemoveLock(){
     const [files,setFiles] = useState(null);
     const [previewUrls,setPreviewUrls] = useState([]);
+
     const handleChange = (e)=>{
         console.log("working");
         const selectedFiles = Array.from(e.target.files)
@@ -65,13 +67,20 @@ function RemoveLock(){
 
     }
     
+    // const formData = new formData();
+    // files.forEach((file , index) => {
+    //     formData.append(`file${index+1}`,file);
+    // });
 
-    const handleSubmit = ()=>{
-        console.log("working");
+    const handleSubmit = async()=>{
         if(!files){
             alert("please enter file");
-        };
-        console.log(files);
+        }else{
+            const response = await axios.post('/api/uploadtocloud',files);
+            const data = response.data;
+            console.log(data.message);
+        }
+        
     }
 
     return<div>
