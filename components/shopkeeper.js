@@ -67,17 +67,22 @@ function RemoveLock(){
 
     }
     
-    // const formData = new formData();
-    // files.forEach((file , index) => {
-    //     formData.append(`file${index+1}`,file);
-    // });
+    const formData = new FormData();
+
+    files && files.forEach((file , index) => {
+        formData.append(`file${index+1}`,file);
+    });
 
     const handleSubmit = async()=>{
         if(!files){
             alert("please enter file");
         }else{
             console.log(files);
-            const response = await axios.post('/api/uploadtocloud',{files:files});
+            const response = await axios.post('/api/uploadtocloud',formData,{
+                headers:{
+                    "Content-Type":"multipart/form-data",
+                }
+            });
             const data = response.data;
             console.log(data.message);
         }
@@ -86,7 +91,7 @@ function RemoveLock(){
 
     return<div>
         <div>
-            <input type="file" onChange={handleChange} multiple/>
+            <input type="file" name="file" onChange={handleChange} multiple/>
             <input type="submit"  onClick={handleSubmit} />
         </div>
         <div >
