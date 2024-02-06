@@ -1,9 +1,10 @@
 import { BlobServiceClient } from '@azure/storage-blob';
 import { IncomingForm } from 'formidable';
-
+import fs from 'fs';
 const containerName = 'images';
 const blobServiceClient = BlobServiceClient.fromConnectionString(process.env.AZURE_STORAGE_CONNECTION_STRING);
 const containerClient = blobServiceClient.getContainerClient(containerName);
+let ImagesUrl=[];
 
 export const config = {
   api: {
@@ -33,17 +34,20 @@ export default async function uploadToCloud(req, res) {
 
           console.log('fileArray',fileArray);
           
-          // Handle file uploads
+          // Handle file uploads+
           for (const file of fileArray) {
-            const h = file[0].PersistentFile;
-            console.log('fileName',h);
-            const blobName = `${Date.now()}_${file.PersistentFile}`;
-            console.log("Name",blobName);
+            const blobName = `${Date.now()}_${file[0].originalFilename}`;
+            console.log("loook",file[0].filepath,file[0].size);
+            const fileBuffer = fs.readFileSync(file[0].filepath);
             const blockBlobClient = containerClient.getBlockBlobClient(blobName);
-            await blockBlobClient.upload(file.PersistentFile.filepath);
+            const response = await blockBlobClient.upload(fileBuffer,file[0].size,undefined,{blobHTTPHeaders: { blobContentType: file[0].mimetype }});
+            const storageAccountUrl = `https://${process.env.AZURE_STORAGE_ACCOUNT}.blob.core.windows.net`;
+            const blobUrl = `${storageAccountUrl}/${containerName}/${blobName}`;
+            ImagesUrl = [...ImagesUrl,blobUrl];
+            console.log(response);
           }
 
-          return res.status(200).json({ message: 'Files uploaded successfully' });
+          return res.status(200).json({ message: 'Files uploaded successfully',URL:{ImagesUrl}});
         } catch (error) {
           console.error('Error occurred while storing the files at Azure Blob Storage', error);
           return res.status(500).json({ error: 'Internal server error' });

@@ -49,10 +49,11 @@ function ShowLock(){
 function RemoveLock(){
     const [files,setFiles] = useState(null);
     const [previewUrls,setPreviewUrls] = useState([]);
-
+    const [URLs, setURLs] = useState([]);
     const handleChange = (e)=>{
         console.log("working");
-        const selectedFiles = Array.from(e.target.files)
+        const selectedFiles = Array.from(e.target.files);
+        
         setFiles(selectedFiles);
 
         const promises = selectedFiles.map((file) => {
@@ -84,7 +85,9 @@ function RemoveLock(){
                 }
             });
             const data = response.data;
-            console.log(data.message);
+            alert(data.message);
+            setURLs(data.URL.ImagesUrl);
+            console.log(data.URL.ImagesUrl);
         }
         
     }
@@ -104,6 +107,9 @@ function RemoveLock(){
         </div>
       )}
         </div>
-
+        <div>
+            <h1>Retrival Image</h1>
+            <img src={"https://productimage.blob.core.windows.net/images/1707192062292_github.png"} alt=''/>
+        </div>    
     </div>
 }
