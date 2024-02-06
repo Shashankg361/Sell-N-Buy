@@ -17,7 +17,7 @@ export default function Account(){
                 return <Profile />
             case 'Dashboard':
                 return <Dashboard />
-            case 'Shop':
+            case `ShopKeeper's place`:
                 return <Shopkeeper />
         }
     }
@@ -29,7 +29,7 @@ export default function Account(){
                 <ul className="mt-5">
                     <li><div onClick={()=>setRoute('Profile')} className="cursor-pointer font-semibold text-xl">Profile</div></li>
                     <li><div onClick={()=>setRoute('Dashboard')} className="cursor-pointer font-semibold text-xl"> Dashboard</div></li>
-                    <li><div onClick={()=>setRoute('Shop')} className={`cursor-pointer font-semibold text-xl ${shopkeeperBtn}`}>Shopkeeper</div></li>
+                    <li><div onClick={()=>setRoute(`ShopKeeper's place`)} className={`cursor-pointer font-semibold text-xl ${shopkeeperBtn}`}>Shopkeeper</div></li>
                 </ul>
             </div>
             <div className="h-screen bg-gray-100 flex-auto p-1 bg- text-black overflow-y-hidden">

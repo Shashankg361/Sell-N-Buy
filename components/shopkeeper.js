@@ -92,24 +92,19 @@ function RemoveLock(){
         
     }
 
+    //URLs && console.log('URLLL',URLs);
+
     return<div>
-        <div>
-            <input type="file" name="file" onChange={handleChange} multiple/>
-            <input type="submit"  onClick={handleSubmit} />
+        <div className="z-10 bg-black/70 fixed flex justify-center items-center left-0 top-0 h-screen w-screen">
+            <div className="text-black bg-slate-500 h-3/4 w-3/4">
+                <form className="">
+                    <label>mobile name</label>
+                    <input type="text" placeholder="Enter mobile name"></input>
+                </form>
+            </div>
         </div>
-        <div >
-        {previewUrls.length > 0 && (
-        <div className="flex">
-          <p>Previews:</p>
-          {previewUrls.map((url, index) => (
-            <img key={index} src={url} alt={`Preview ${index}`} style={{ maxWidth: '20%' }} />
-          ))}
+        <div className="bg-white p-2 mt-2 flex items-center justify-center h-screen w-auto">
+            <h1 className="bg-black text-white cursor-pointer text-xl border-2 p-2 rounded-lg">+ Add New Mobile</h1>
         </div>
-      )}
-        </div>
-        <div>
-            <h1>Retrival Image</h1>
-            <img src={"https://productimage.blob.core.windows.net/images/1707192062292_github.png"} alt=''/>
-        </div>    
     </div>
 }

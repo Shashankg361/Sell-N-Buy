@@ -37,14 +37,12 @@ export default async function uploadToCloud(req, res) {
           // Handle file uploads+
           for (const file of fileArray) {
             const blobName = `${Date.now()}_${file[0].originalFilename}`;
-            console.log("loook",file[0].filepath,file[0].size);
             const fileBuffer = fs.readFileSync(file[0].filepath);
             const blockBlobClient = containerClient.getBlockBlobClient(blobName);
             const response = await blockBlobClient.upload(fileBuffer,file[0].size,undefined,{blobHTTPHeaders: { blobContentType: file[0].mimetype }});
             const storageAccountUrl = `https://${process.env.AZURE_STORAGE_ACCOUNT}.blob.core.windows.net`;
             const blobUrl = `${storageAccountUrl}/${containerName}/${blobName}`;
             ImagesUrl = [...ImagesUrl,blobUrl];
-            console.log(response);
           }
 
           return res.status(200).json({ message: 'Files uploaded successfully',URL:{ImagesUrl}});
