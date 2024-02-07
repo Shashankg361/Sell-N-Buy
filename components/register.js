@@ -34,6 +34,7 @@ export default function Register({data}){
     },[]);
 
     const {register , formState:{errors} ,setValue, handleSubmit} = useForm();
+    
     const submit = async (detail)=>{
        // console.log("isValid",valid);
         if(!valid){

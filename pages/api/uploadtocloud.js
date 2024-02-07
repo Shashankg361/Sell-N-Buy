@@ -1,3 +1,4 @@
+import { client } from '@/database/handleDatabase';
 import { BlobServiceClient } from '@azure/storage-blob';
 import { IncomingForm } from 'formidable';
 import fs from 'fs';
@@ -43,6 +44,8 @@ export default async function uploadToCloud(req, res) {
             const storageAccountUrl = `https://${process.env.AZURE_STORAGE_ACCOUNT}.blob.core.windows.net`;
             const blobUrl = `${storageAccountUrl}/${containerName}/${blobName}`;
             ImagesUrl = [...ImagesUrl,blobUrl];
+
+            const db = client
           }
 
           return res.status(200).json({ message: 'Files uploaded successfully',URL:{ImagesUrl}});
