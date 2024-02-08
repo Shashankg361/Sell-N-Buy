@@ -3,14 +3,14 @@ import { faLock } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import { useContext, useEffect, useRef, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 
 
 export default function Shopkeeper(){
     const {userData} = useContext(pool);
 
     const show = ()=>{
-        if(userData.Shopkeeper){
+        if(userData.Shopkeeper || true){
             return <RemoveLock />
         }else{
             return <ShowLock lockBtnRef/>
@@ -54,34 +54,51 @@ function RemoveLock(){
     const [previewUrls,setPreviewUrls] = useState([]);
     const [URLs, setURLs] = useState([]);
     const [toggle , setToggle] = useState(false);
-    const {register,formState:{errors},handleSubmit} = useForm();
+    const {register,formState:{errors},handleSubmit,watch,reset,formState} = useForm();
 
-    const handleChange = (e)=>{
-        //console.log("working");
-        const selectedFiles = Array.from(e.target.files);
-        
+    //Handling file upload
+    const filesSelected = watch('files');
+    let selectedFiles;
+    const handleChange = ()=>{
+        selectedFiles = Array.from(filesSelected);
         setFiles(selectedFiles);
-
-        const promises = selectedFiles.map((file) => {
-            return new Promise((resolve) => {
-              const reader = new FileReader();
-              reader.onload = () => resolve(reader.result);
-              reader.readAsDataURL(file);
-            });
-        });
-      
-        Promise.all(promises).then((urls) => setPreviewUrls(urls));
     }
-    
+
+    useEffect(()=>{
+        if(selectedFiles){
+            const promises = selectedFiles.map((file) => {
+                return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.readAsDataURL(file);
+                });
+            });
+            
+            Promise.all(promises).then((urls) => setPreviewUrls(urls));
+        }
+    },[files]);
+
+    useEffect(() => {
+        if (formState.touchedFields.files) {
+          handleChange();
+        }
+      }, [formState.touchedFields.files]);
+
     const formData = new FormData();
 
     files && files.forEach((file , index) => {
         formData.append(`file${index+1}`,file);
     });
 
+    //API call for storing Image file and details
     const submit = async(details)=>{
-        
-        formData.append("details",details);
+
+        formData.append("details",JSON.stringify(details));
+
+        for (let pair of formData.entries()) {
+            console.log(pair[0] + ', ' + JSON.stringify(pair[1]));
+        }
+
         if(!files){
             alert("please enter file");
         }else{
@@ -96,7 +113,6 @@ function RemoveLock(){
             setURLs(data.URL.ImagesUrl);
             console.log(data.URL.ImagesUrl);
         }
-        
     }
 
     //URLs && console.log('URLLL',URLs);
@@ -135,16 +151,16 @@ function RemoveLock(){
                     <input type="text" className="p-2 border-4 rounded-lg" placeholder="eg:Snapdrgon 860/dimensity 1200" {...register('Processor',{required:'This feild is required'})}/>
                     {errors.Processor && <h1 className="text-red-500">{errors.Processor.message}</h1>}
 
-                    <label className="font-semibold text-lg p-2">How many time used</label>
+                    <label className="font-semibold text-lg p-2">Used for</label>
                     <input type="text" className="p-2 border-4 rounded-lg" placeholder="eg:1 year 2 month" {...register('UsedFor',{required:'This feild is required'})}/>
                     {errors.UsedFor && <h1 className="text-red-500">{errors.UsedFor.message}</h1>}
 
                     <label className="font-semibold text-lg p-2">Add pictures</label>
-                    <input type="file" className="p-2 border-4 rounded-lg" onChange={handleChange} placeholder="Upload phone pictures" {...register('files',{required:'This feild is required'})} multiple/>
+                    <input type="file" className="p-2 border-4 rounded-lg" placeholder="Upload phone pictures" {...register('files',{required:'This feild is required'})} multiple/>
                     {errors.files && <h1 className="text-red-500">{errors.files.message}</h1>}
 
-                    {previewUrls && previewUrls.map((element)=>{
-                        return <img src={element} alt="" style={maxWidth = "20%"}/>
+                    {previewUrls && previewUrls.map((url)=>{
+                        return <img src={url} alt="" style={maxWidth = "20%"}/>
                     })}
 
                     <input type="submit" id="submit" className="bg-gray-800 p-2 rounded-lg text-white mt-2 cursor-pointer"></input>
