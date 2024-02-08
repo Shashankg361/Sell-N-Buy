@@ -19,27 +19,28 @@ export default async function uploadToCloud(req, res) {
       const form = new IncomingForm();
 
       //console.log("Body",req.body);
-      form.parse(req, async (err, fields, filess) => {
+      form.parse(req, async (err, fields, files) => {
         if (err) {
           console.error('Error parsing form data', err);
           res.status(500).json({ message: 'Internal server error' });
           return;
         }
         
+        
         //const fieldsArray = Object.values(fields);
         console.log("fields",JSON.parse(fields.details));
 
-        const {Mname,Cname,RearC,FrontC,Ram,Rom,Processor,UsedFor,files} = JSON.parse(fields.details);
-
+        const {Mname,Cname,RearC,FrontC,Ram,Rom,Processor,UsedFor} = JSON.parse(fields.details);
+        console.log("files",files);
           try {
-            const fileArray = Object.values(filess);
-
+            const fileArray = Object.values(files);
+            console.log('fileArray',fileArray);
             // Check if files are present in the form data
             if (!fileArray || fileArray.length === 0) {
               return res.status(400).json({ message: 'No files uploaded' });
             }
-
-            console.log('fileArray',fileArray);
+            console.log("working");
+            
             
             // Handle file uploads at azure blob storage
             for (const file of fileArray) {
@@ -65,6 +66,7 @@ export default async function uploadToCloud(req, res) {
 
       });
     }
+    //res.status(200).json({message:"Working"});
   } catch (error) {
     console.error('Unhandled error in API route', error);
     res.status(500).json({ error: 'Internal server error' });

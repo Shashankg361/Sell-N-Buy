@@ -57,16 +57,16 @@ function RemoveLock(){
     const {register,formState:{errors},handleSubmit,watch,reset,formState} = useForm();
 
     //Handling file upload
-    const filesSelected = watch('files');
-    let selectedFiles;
-    const handleChange = ()=>{
-        selectedFiles = Array.from(filesSelected);
-        setFiles(selectedFiles);
-    }
-
     useEffect(()=>{
-        if(selectedFiles){
-            const promises = selectedFiles.map((file) => {
+        const selectedFiles = Array.from(watch('files'))
+        setFiles(selectedFiles);
+    },[files])
+    
+    let selectedFiles;
+    useEffect(()=>{
+        //files && (selectedFiles = Array.from(files));
+        if(files){
+            const promises = files.map((file) => {
                 return new Promise((resolve) => {
                 const reader = new FileReader();
                 reader.onload = () => resolve(reader.result);
@@ -78,26 +78,16 @@ function RemoveLock(){
         }
     },[files]);
 
-    useEffect(() => {
-        if (formState.touchedFields.files) {
-          handleChange();
-        }
-      }, [formState.touchedFields.files]);
-
-    const formData = new FormData();
-
-    files && files.forEach((file , index) => {
-        formData.append(`file${index+1}`,file);
-    });
-
     //API call for storing Image file and details
     const submit = async(details)=>{
+        console.log("Data",details);
+        const formData = new FormData();
+
+        files && files.forEach((file , index) => {
+            formData.append(`file${index+1}`,file);
+        });
 
         formData.append("details",JSON.stringify(details));
-
-        for (let pair of formData.entries()) {
-            console.log(pair[0] + ', ' + JSON.stringify(pair[1]));
-        }
 
         if(!files){
             alert("please enter file");
@@ -113,6 +103,7 @@ function RemoveLock(){
             setURLs(data.URL.ImagesUrl);
             console.log(data.URL.ImagesUrl);
         }
+
     }
 
     //URLs && console.log('URLLL',URLs);
@@ -120,7 +111,7 @@ function RemoveLock(){
     return<div>
         
         <div className={`z-10 bg-black/70 fixed flex justify-center items-center left-0 top-0 h-screen w-screen ${toggle ? "block":"hidden"}`}>
-            <div className=" popUp text-black bg-gray-200 h-96 w-96 p-5 items-center overflow-y-auto">
+            <div className=" popUp text-black bg-gray-200 h-3/4 w-96 p-5 items-center overflow-y-auto">
             <div className="text-white m-5 text-lg cursor-pointer right-0 top-0 fixed" onClick={()=>setToggle(!toggle)}>X</div>
                 <form className="flex flex-col" onSubmit={handleSubmit(submit)}>
                     <label className="font-semibold text-lg p-2">Mobile name</label>
@@ -159,9 +150,12 @@ function RemoveLock(){
                     <input type="file" className="p-2 border-4 rounded-lg" placeholder="Upload phone pictures" {...register('files',{required:'This feild is required'})} multiple/>
                     {errors.files && <h1 className="text-red-500">{errors.files.message}</h1>}
 
-                    {previewUrls && previewUrls.map((url)=>{
-                        return <img src={url} alt="" style={maxWidth = "20%"}/>
-                    })}
+                    <div className="grid grid-cols-2 gap-x-2 gap-y-2">
+                        {previewUrls && previewUrls.map((url)=>{
+                            return <img src={url} alt="" style={{maxWidth : "100%"}}/>
+                        })}
+                    </div>
+                    
 
                     <input type="submit" id="submit" className="bg-gray-800 p-2 rounded-lg text-white mt-2 cursor-pointer"></input>
                 </form>
