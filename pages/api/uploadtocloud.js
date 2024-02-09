@@ -26,12 +26,13 @@ export default async function uploadToCloud(req, res) {
           return;
         }
         
-        
         //const fieldsArray = Object.values(fields);
-        console.log("fields",JSON.parse(fields.details));
+        //console.log("fields",JSON.parse(fields.details));
 
         const {Mname,Cname,RearC,FrontC,Ram,Rom,Processor,UsedFor} = JSON.parse(fields.details);
-        console.log("files",files);
+        const owner = JSON.parse(fields.owner);
+        const Booked = false;
+        //console.log("files",files);
           try {
             const fileArray = Object.values(files);
             console.log('fileArray',fileArray);
@@ -53,10 +54,18 @@ export default async function uploadToCloud(req, res) {
               ImagesUrl = [...ImagesUrl,blobUrl];
             }
             //storing detail to mongodb
-            const data = {Mname,Cname,RearC,FrontC,Ram,Rom,Processor,UsedFor,ImagesUrl};
+            const data = {Mname,Cname,RearC,FrontC,Ram,Rom,Processor,UsedFor,ImagesUrl,owner,Booked};
             const db = client.db('MobileDets');
             const collctionRef = db.collection('Details');
             await collctionRef.insertOne(data);
+
+            //Updating update variable
+            const regDb = client.db('User_Details');
+            const collection = regDb.collection('Registration')
+            const response = await collection.findOne(owner);
+            const upload = response.Uploaded + 1;
+            const query = {Uploaded : upload};
+            await collection.updateOne(query);
 
             return res.status(200).json({ message: 'Files uploaded successfully',URL:{ImagesUrl}});
           } catch (error) {

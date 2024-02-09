@@ -3,14 +3,14 @@ import { faLock } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import { useContext, useEffect, useRef, useState } from "react";
-import { useForm, useWatch } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 
 export default function Shopkeeper(){
     const {userData} = useContext(pool);
 
     const show = ()=>{
-        if(userData.Shopkeeper || true){
+        if(userData.Shopkeeper){
             return <RemoveLock />
         }else{
             return <ShowLock lockBtnRef/>
@@ -55,16 +55,17 @@ function RemoveLock(){
     const [URLs, setURLs] = useState([]);
     const [toggle , setToggle] = useState(false);
     const {register,formState:{errors},handleSubmit,watch,reset,formState} = useForm();
+    const {userData} = useContext(pool);
 
     //Handling file upload
     useEffect(()=>{
+
         const selectedFiles = Array.from(watch('files'))
         setFiles(selectedFiles);
+        
     },[files])
     
-    let selectedFiles;
     useEffect(()=>{
-        //files && (selectedFiles = Array.from(files));
         if(files){
             const promises = files.map((file) => {
                 return new Promise((resolve) => {
@@ -80,7 +81,6 @@ function RemoveLock(){
 
     //API call for storing Image file and details
     const submit = async(details)=>{
-        console.log("Data",details);
         const formData = new FormData();
 
         files && files.forEach((file , index) => {
@@ -88,11 +88,12 @@ function RemoveLock(){
         });
 
         formData.append("details",JSON.stringify(details));
+        formData.append("owner",JSON.stringify(userData.Email));
 
         if(!files){
             alert("please enter file");
         }else{
-            console.log(files);
+            //console.log(files);
             const response = await axios.post('/api/uploadtocloud',formData,{
                 headers:{
                     "Content-Type":"multipart/form-data",
@@ -102,6 +103,8 @@ function RemoveLock(){
             alert(data.message);
             setURLs(data.URL.ImagesUrl);
             console.log(data.URL.ImagesUrl);
+            reset();
+            setToggle(!toggle);
         }
 
     }
