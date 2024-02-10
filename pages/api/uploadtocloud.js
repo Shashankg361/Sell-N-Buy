@@ -62,10 +62,12 @@ export default async function uploadToCloud(req, res) {
             //Updating update variable
             const regDb = client.db('User_Details');
             const collection = regDb.collection('Registration')
-            const response = await collection.findOne(owner);
+            const filter = {Email:owner}
+            const response = await collection.findOne(filter);
+            console.log(response);
             const upload = response.Uploaded + 1;
-            const query = {Uploaded : upload};
-            await collection.updateOne(query);
+            const query = {$set:{Uploaded : upload}};
+            await collection.updateOne(filter,query);
 
             return res.status(200).json({ message: 'Files uploaded successfully',URL:{ImagesUrl}});
           } catch (error) {

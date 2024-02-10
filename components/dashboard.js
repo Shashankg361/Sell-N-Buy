@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 export default function Dashboard(){
+    
     return(
         <div className="h-full overflow-y-hidden">
             <div className="flex mt-2 p-1">
