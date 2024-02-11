@@ -16,6 +16,7 @@ try{
     const changestream = collection.watch();
 
     changestream.on('change',(newData)=>{
+        console.log("type",newData.operationType);
         if(newData.operationType === 'insert' || newData.operationType === 'update'){
             //console.log("newData",newData);
             wss.clients.forEach((client)=>{

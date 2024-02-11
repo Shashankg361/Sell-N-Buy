@@ -14,12 +14,18 @@ export default function Dashboard(){
         io.onopen = ()=>{
             console.log('Websocket connected');
         }
-
+ 
         io.onmessage = (message)=>{
-            const newAdded = JSON.parse(message.data)
+            const newAdded = JSON.parse(message.data);
+            console.log(newAdded);
+            const uploadInfo = newAdded.updateDescription.updatedFields; 
             if(newAdded.operationType === "update"){
-                setUploaded(newAdded.Uploaded);
-                setBooked(newAdded.Booked);
+                if(uploadInfo.Uploaded != undefined){
+                    console.log("Working",uploadInfo.Uploaded,uploadInfo.Booked)
+                    setUploaded(uploadInfo.Uploaded);
+                }else{
+                    setBooked(uploadInfo.Booked);
+                }
             }
         }
 
@@ -27,8 +33,12 @@ export default function Dashboard(){
             console.log('disconnected to websocket');
         }
     },[]);
-    console.log("Uploaded",uploaded);
-    console.log("Booked",booked);
+
+    useEffect(()=>{
+        console.log("Uploaded",uploaded);
+        console.log("Booked",booked);
+    },[uploaded,booked])
+    
 
     return(
         <div className="h-full overflow-y-hidden">

@@ -58,12 +58,13 @@ function RemoveLock(){
     const {userData} = useContext(pool);
 
     //Handling file upload
+    const formFiles = watch('files')
     useEffect(()=>{
-
-        const selectedFiles = Array.from(watch('files'))
-        setFiles(selectedFiles);
-        
-    },[files])
+        if(formFiles){
+            const selectedFiles = Array.from(formFiles);
+            setFiles(selectedFiles);
+        }
+    },[formFiles])
     
     useEffect(()=>{
         if(files){
@@ -154,8 +155,8 @@ function RemoveLock(){
                     {errors.files && <h1 className="text-red-500">{errors.files.message}</h1>}
 
                     <div className="grid grid-cols-2 gap-x-2 gap-y-2">
-                        {previewUrls && previewUrls.map((url)=>{
-                            return <img src={url} alt="" style={{maxWidth : "100%"}}/>
+                        {previewUrls && previewUrls.map((url,index)=>{
+                            return <img src={url} alt="" id={index} style={{maxWidth : "100%"}}/>
                         })}
                     </div>
                     
