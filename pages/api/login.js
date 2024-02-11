@@ -39,6 +39,8 @@ export default async function login(req, res){
                 Name:data.FirstName +" "+ data.LastName,
                 Email:data.Email,
                 Shopkeeper:data.Shopkeeper,
+                Uploaded:data.Uploaded,
+                Booked:data.Booked,
             }
             const matched = calculation(PasswordCred,Password);
             //console.log('matched',matched);

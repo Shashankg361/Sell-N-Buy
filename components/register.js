@@ -24,8 +24,11 @@ export default function Register({data}){
 
         io.onmessage = (message)=>{
             const newAdded = JSON.parse(message.data);
-            console.log("newly",newAdded);
-            setNewdata([...newdata,newAdded.fullDocument]);
+            // console.log("Type",newAdded.operationType);
+            // console.log("newly",newAdded);
+            if(newAdded.operationType === "insert"){
+                setNewdata([...newdata,newAdded.fullDocument]);
+            }
         }
 
         io.onclose = ()=>{

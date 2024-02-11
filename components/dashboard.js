@@ -1,18 +1,45 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { useContext, useEffect, useState } from "react";
+import { pool } from "@/pages/_app";
 
 export default function Dashboard(){
-    
+    const {userData} = useContext(pool);
+    const [uploaded,setUploaded] = useState(userData.Uploaded);
+    const [booked,setBooked] = useState(userData.Booked);
+
+    //websocket for getting the
+    useEffect(()=>{
+        const io = new WebSocket('ws://localhost:8080');
+        io.onopen = ()=>{
+            console.log('Websocket connected');
+        }
+
+        io.onmessage = (message)=>{
+            const newAdded = JSON.parse(message.data)
+            if(newAdded.operationType === "update"){
+                setUploaded(newAdded.Uploaded);
+                setBooked(newAdded.Booked);
+            }
+        }
+
+        io.onclose = ()=>{
+            console.log('disconnected to websocket');
+        }
+    },[]);
+    console.log("Uploaded",uploaded);
+    console.log("Booked",booked);
+
     return(
         <div className="h-full overflow-y-hidden">
             <div className="flex mt-2 p-1">
                 <div className="bg-white w-2/4 border-1 rounded-md p-2">
                     <h1 className="font-semibold text-2xl">Booked</h1>
-                    <h1 className="mt-5 font-bold text-4xl">0</h1>
+                    <h1 className="mt-5 font-bold text-4xl">{booked}</h1>
                 </div>
                 <div className="ml-5 bg-white w-2/4 border-1 rounded-md p-2">
                     <h1 className="font-semibold text-2xl">Uploaded</h1>
-                    <h1 className="mt-5 font-bold text-4xl">0</h1>
+                    <h1 className="mt-5 font-bold text-4xl">{uploaded}</h1>
                 </div>
             </div>
             <div className="flex flex-col h-3/4"> 

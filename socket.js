@@ -7,15 +7,17 @@ const server = http.createServer();
 const wss = new websocket.Server({server});
 
 wss.on('connection',(ws)=>{
-    console.log("data:",ws);
+    console.log("Connected",);
 });
+
 try{
     const db = client.db('User_Details');
     const collection = db.collection('Registration');
     const changestream = collection.watch();
 
     changestream.on('change',(newData)=>{
-        if(newData.operationType === 'insert'){
+        if(newData.operationType === 'insert' || newData.operationType === 'update'){
+            //console.log("newData",newData);
             wss.clients.forEach((client)=>{
                 if(client.readyState === websocket.OPEN){
                     client.send(JSON.stringify(newData));
