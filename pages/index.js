@@ -3,13 +3,15 @@ import { Inter } from 'next/font/google'
 import { client, connectDB } from '@/database/handleDatabase'
 import { useContext, useEffect } from 'react'
 import { pool } from './_app'
+import ShowProduct from '@/components/showproduct'
 
 const inter = Inter({ subsets: ['latin'] })
 export default function Home({data}) {
+  console.log("Data:",JSON.parse(data));
   const {setMobileDets} = useContext(pool);
   
   useEffect(()=>{
-    setMobileDets(data);
+    setMobileDets(JSON.parse(data));
   },[])
 
   return (
@@ -17,7 +19,7 @@ export default function Home({data}) {
       className={`p-3 min-h-screen text-black ${inter.className} bg-white`}
     >
       <Navbar />
-      <Home />
+      <ShowProduct />
     </main>
   )
 }
