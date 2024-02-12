@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 
 
 export default function Register({data}){
-    const router = new useRouter();
+    //const router = new useRouter();
     const [newdata , setNewdata] = useState(JSON.parse(data)); 
     // useEffect(()=>{
     // setNewdata();

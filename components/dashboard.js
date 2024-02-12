@@ -4,41 +4,14 @@ import { useContext, useEffect, useState } from "react";
 import { pool } from "@/pages/_app";
 
 export default function Dashboard(){
-    const {userData} = useContext(pool);
-    const [uploaded,setUploaded] = useState(userData.Uploaded);
-    const [booked,setBooked] = useState(userData.Booked);
+    const {uploaded,booked} = useContext(pool);
 
-    //websocket for getting the
-    useEffect(()=>{
-        const io = new WebSocket('ws://localhost:8080');
-        io.onopen = ()=>{
-            console.log('Websocket connected');
-        }
- 
-        io.onmessage = (message)=>{
-            const newAdded = JSON.parse(message.data);
-            console.log(newAdded);
-            const uploadInfo = newAdded.updateDescription.updatedFields; 
-            if(newAdded.operationType === "update"){
-                if(uploadInfo.Uploaded != undefined){
-                    console.log("Working",uploadInfo.Uploaded,uploadInfo.Booked)
-                    setUploaded(uploadInfo.Uploaded);
-                }else{
-                    setBooked(uploadInfo.Booked);
-                }
-            }
-        }
-
-        io.onclose = ()=>{
-            console.log('disconnected to websocket');
-        }
-    },[]);
+    // uploaded && console.log("Uploaded",uploaded);
 
     useEffect(()=>{
-        console.log("Uploaded",uploaded);
-        console.log("Booked",booked);
-    },[uploaded,booked])
-    
+        console.log("changed",uploaded);
+        //console.log("Booked",booked);
+    },[uploaded])
 
     return(
         <div className="h-full overflow-y-hidden">

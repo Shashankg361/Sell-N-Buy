@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 export default function Login(){
     const router = useRouter();
-    const {LoggedIn , setLoggedIn , userData , setUserData} = useContext(pool);
+    const {LoggedIn , setLoggedIn , userData , setUserData, setUploaded, setBooked} = useContext(pool);
     const {register , handleSubmit ,formState: {errors}} = useForm();
     const submit = async (data)=>{ 
        //console.log(data);
@@ -15,6 +15,8 @@ export default function Login(){
         const Resdata = response.data;
         console.log("Recived",Resdata.Data)
         setUserData(Resdata.Data);
+        setUploaded(Resdata.Data.Uploaded);
+        setBooked(Resdata.Data.Booked);
         alert(Resdata.Message);
         Resdata.LoggedIn && router.push('/');
         //console.log("message",Resdata.Message , Resdata.LoggedIn);
