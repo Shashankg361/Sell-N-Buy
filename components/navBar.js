@@ -4,7 +4,7 @@ import { useContext } from "react";
 
 export default function Navbar(){
     const {LoggedIn} = useContext(pool);
-    console.log("Home page",LoggedIn);
+    //console.log("Home page",LoggedIn);
     return<>
         <div className="flex justify-between items-center">
             <div>

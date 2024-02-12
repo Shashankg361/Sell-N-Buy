@@ -32,6 +32,7 @@ export default async function uploadToCloud(req, res) {
         const {Mname,Cname,RearC,FrontC,Ram,Rom,Processor,UsedFor} = JSON.parse(fields.details);
         const owner = JSON.parse(fields.owner);
         const Booked = false;
+        const BookedBy = '';
         //console.log("files",files);
           try {
             const fileArray = Object.values(files);
@@ -40,8 +41,6 @@ export default async function uploadToCloud(req, res) {
             if (!fileArray || fileArray.length === 0) {
               return res.status(400).json({ message: 'No files uploaded' });
             }
-            console.log("working");
-            
             
             // Handle file uploads at azure blob storage
             for (const file of fileArray) {
@@ -54,7 +53,7 @@ export default async function uploadToCloud(req, res) {
               ImagesUrl = [...ImagesUrl,blobUrl];
             }
             //storing detail to mongodb
-            const data = {Mname,Cname,RearC,FrontC,Ram,Rom,Processor,UsedFor,ImagesUrl,owner,Booked};
+            const data = {Mname,Cname,RearC,FrontC,Ram,Rom,Processor,UsedFor,ImagesUrl,owner,Booked,BookedBy};
             const db = client.db('MobileDets');
             const collctionRef = db.collection('Details');
             await collctionRef.insertOne(data);
