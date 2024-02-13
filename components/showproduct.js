@@ -1,20 +1,28 @@
 import { pool } from "@/pages/_app";
 import { faIndianRupee, faRupee } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import axios from "axios";
-import { useContext } from "react";
-import useSWR from "swr";
+import { useContext, useEffect } from "react";
+
 
 export default function ShowProduct(){
-    const {mobileDets} = useContext(pool);
+    const {mobileDets,setMobileDets} = useContext(pool);
 
-    const fetcher = ()=>{
-        const response = axios('api/addingNewProduct');
-        const data = response.data;
-        return data.newData
-    }
+    useEffect(()=>{
+        const io = new WebSocket('ws://localhost:3000/api/addingNewProduct');
+        io.onopen = ()=>{
+            console.log('connected mobileDets');
+        };
 
-    const {data,error} = useSWR()
+        io.onmessage = (message)=>{
+            const newAdded = JSON.parse(message);
+
+            setMobileDets([...mobileDets,newAdded.fullDocument]);
+        }
+
+        io.onclose=()=>{
+            console.log('Webscoket closed');
+        };
+    },[])
 
     return(
         <div>
