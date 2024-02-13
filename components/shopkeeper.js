@@ -193,7 +193,7 @@ function RemoveLock(){
                     {errors.Price && <h1 className="text-red-500">{errors.Price.message}</h1>}
 
                     <label className="font-semibold text-lg p-2">Add pictures</label>
-                    <input type="file" className="p-2 border-4 rounded-lg" placeholder="Upload phone pictures" {...register('files',{required:'This feild is required'})} multiple/>
+                    <input type="file" accept="image/*" className="p-2 border-4 rounded-lg" placeholder="Upload phone pictures" {...register('files',{required:'This feild is required'})} multiple/>
                     {errors.files && <h1 className="text-red-500">{errors.files.message}</h1>}
 
                     <div className="grid grid-cols-2 gap-x-2 gap-y-2">
