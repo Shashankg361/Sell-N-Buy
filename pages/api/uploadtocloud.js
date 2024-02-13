@@ -29,7 +29,7 @@ export default async function uploadToCloud(req, res) {
         //const fieldsArray = Object.values(fields);
         //console.log("fields",JSON.parse(fields.details));
 
-        const {Mname,Cname,RearC,FrontC,Ram,Rom,Processor,UsedFor} = JSON.parse(fields.details);
+        const {Mname,Cname,RearC,FrontC,Ram,Rom,Processor,Battery,UsedFor,ShopName,Description,Price} = JSON.parse(fields.details);
         const owner = JSON.parse(fields.owner);
         const Booked = false;
         const BookedBy = '';
@@ -53,12 +53,12 @@ export default async function uploadToCloud(req, res) {
               ImagesUrl = [...ImagesUrl,blobUrl];
             }
             //storing detail to mongodb
-            const data = {Mname,Cname,RearC,FrontC,Ram,Rom,Processor,UsedFor,ImagesUrl,owner,Booked,BookedBy};
+            const data = {Mname,Cname,RearC,FrontC,Ram,Rom,Processor,Battery,UsedFor,ShopName,Description,Price,ImagesUrl,owner,Booked,BookedBy};
             const db = client.db('MobileDets');
             const collctionRef = db.collection('Details');
             await collctionRef.insertOne(data);
 
-            //Updating update variable
+            //Updating uploaded fielding
             const regDb = client.db('User_Details');
             const collection = regDb.collection('Registration')
             const filter = {Email:owner}

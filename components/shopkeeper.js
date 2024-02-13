@@ -153,28 +153,44 @@ function RemoveLock(){
                     {errors.Cname && <h1 className="text-red-500">{errors.Cname.message}</h1>}
 
                     <label className="font-semibold text-lg p-2">Rear camera</label>
-                    <input type="text" className="p-2 border-4 rounded-lg" placeholder="Enter eg: 48, 12, 8" {...register('RearC',{required:'This feild is required'})}/>
+                    <input type="text" className="p-2 border-4 rounded-lg" placeholder="eg: 48+12+8" {...register('RearC',{required:'This feild is required'})}/>
                     {errors.RearC && <h1 className="text-red-500">{errors.RearC.message}</h1>}
 
                     <label className="font-semibold text-lg p-2">Front camera</label>
-                    <input type="text" className="p-2 border-4 rounded-lg" placeholder="Enter eg: 8" {...register('FrontC',{required:'This feild is required'})}/>
+                    <input type="text" className="p-2 border-4 rounded-lg" placeholder="eg: 8" {...register('FrontC',{required:'This feild is required'})}/>
                     {errors.FrontC && <h1 className="text-red-500">{errors.FrontC.message}</h1>}
 
                     <label className="font-semibold text-lg p-2">Ram</label>
-                    <input type="text" className="p-2 border-4 rounded-lg" placeholder="Enter eg: 8" {...register('Ram',{required:'This feild is required'})}/>
+                    <input type="text" className="p-2 border-4 rounded-lg" placeholder="eg: 8" {...register('Ram',{required:'This feild is required'})}/>
                     {errors.Ram && <h1 className="text-red-500">{errors.Ram.message}</h1>}
 
                     <label className="font-semibold text-lg p-2">Storage/Rom</label>
-                    <input type="text" className="p-2 border-4 rounded-lg" placeholder="Enter eg: 8" {...register('Rom',{required:'This feild is required'})}/>
+                    <input type="text" className="p-2 border-4 rounded-lg" placeholder="eg: 8" {...register('Rom',{required:'This feild is required'})}/>
                     {errors.Rom && <h1 className="text-red-500">{errors.Rom.message}</h1>}
 
                     <label className="font-semibold text-lg p-2">Processor</label>
-                    <input type="text" className="p-2 border-4 rounded-lg" placeholder="eg:Snapdrgon 860/dimensity 1200" {...register('Processor',{required:'This feild is required'})}/>
+                    <input type="text" className="p-2 border-4 rounded-lg" placeholder="eg: Snapdrgon 860/dimensity 1200" {...register('Processor',{required:'This feild is required'})}/>
                     {errors.Processor && <h1 className="text-red-500">{errors.Processor.message}</h1>}
 
+                    <label className="font-semibold text-lg p-2">Battery</label>
+                    <input type="text" className="p-2 border-4 rounded-lg" placeholder="eg: 5000mh" {...register('Battery',{required:'This feild is required'})}/>
+                    {errors.Battery && <h1 className="text-red-500">{errors.Battery.message}</h1>}
+
                     <label className="font-semibold text-lg p-2">Used for</label>
-                    <input type="text" className="p-2 border-4 rounded-lg" placeholder="eg:1 year 2 month" {...register('UsedFor',{required:'This feild is required'})}/>
+                    <input type="text" className="p-2 border-4 rounded-lg" placeholder="eg: 1 year 2 month" {...register('UsedFor',{required:'This feild is required'})}/>
                     {errors.UsedFor && <h1 className="text-red-500">{errors.UsedFor.message}</h1>}
+
+                    <label className="font-semibold text-lg p-2">Shop name</label>
+                    <input type="text" className="p-2 border-4 rounded-lg" placeholder="eg: om sai mobiles" {...register('ShopName',{required:'This feild is required'})}/>
+                    {errors.ShopName && <h1 className="text-red-500">{errors.ShopName.message}</h1>}
+
+                    <label className="font-semibold text-lg p-2">Description</label>
+                    <textarea type="text" className="p-2 border-4 rounded-lg" placeholder="eg: Describe the condition & features of mobile" {...register('Description',{required:'This feild is required'})}/>
+                    {errors.Description && <h1 className="text-red-500">{errors.Description.message}</h1>}
+
+                    <label className="font-semibold text-lg p-2">{"Price (in rupees)"}</label>
+                    <input type="text" className="p-2 border-4 rounded-lg" placeholder="eg: 6500 " {...register('Price',{required:'This feild is required'})}/>
+                    {errors.Price && <h1 className="text-red-500">{errors.Price.message}</h1>}
 
                     <label className="font-semibold text-lg p-2">Add pictures</label>
                     <input type="file" className="p-2 border-4 rounded-lg" placeholder="Upload phone pictures" {...register('files',{required:'This feild is required'})} multiple/>
