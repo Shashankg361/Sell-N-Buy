@@ -28,7 +28,7 @@ try{
     });
 }catch(error){
     console.log(error);
-}
+};
 
 
 const PORT = 8080;

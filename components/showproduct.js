@@ -1,27 +1,29 @@
 import { pool } from "@/pages/_app";
 import { faIndianRupee, faRupee } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import axios from "axios";
 import { useContext, useEffect } from "react";
-
+import { io } from "socket.io-client";
 
 export default function ShowProduct(){
     const {mobileDets,setMobileDets} = useContext(pool);
 
+    const socketFunc = async()=>{
+        await axios('api/addingNewProduct');
+        const socket = io();
+        socket.on('connect',()=>{
+            console.log('connected');
+        });
+
+        socket.on('updated-document',(message)=>{
+            const newData = JSON.parse(message);
+            console.log("Datatatatatat",newData , newData.fullDocument);
+            mobileDets && setMobileDets([...mobileDets,newData.fullDocument]);
+        })
+    }
+
     useEffect(()=>{
-        const io = new WebSocket('ws://localhost:3000/api/addingNewProduct');
-        io.onopen = ()=>{
-            console.log('connected mobileDets');
-        };
-
-        io.onmessage = (message)=>{
-            const newAdded = JSON.parse(message);
-
-            setMobileDets([...mobileDets,newAdded.fullDocument]);
-        }
-
-        io.onclose=()=>{
-            console.log('Webscoket closed');
-        };
+        socketFunc();
     },[])
 
     return(
