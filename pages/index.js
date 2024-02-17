@@ -7,7 +7,7 @@ import ShowProduct from '@/components/showproduct'
 
 const inter = Inter({ subsets: ['latin'] })
 export default function Home({data}) {
-  console.log("Data:",JSON.parse(data));
+  //console.log("Data:",JSON.parse(data));
   const {setMobileDets} = useContext(pool);
   
   useEffect(()=>{

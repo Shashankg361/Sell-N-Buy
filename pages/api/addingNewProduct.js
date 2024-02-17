@@ -19,24 +19,13 @@ const SocketHandler = (req, res) => {
             changestream.on('change',(newData)=>{
                 console.log("type",newData.operationType);
                 if(newData.operationType === 'insert'){
-                    //console.log("newData",newData);
-                    // wss.clients.forEach((client)=>{
-                    //     if(client.readyState === websocket.OPEN){
-                    //         client.send(JSON.stringify(newData));
-                    //     }
-                    // });
-
                     socket.broadcast.emit('updated-document',JSON.stringify(newData));
-
                 };
             });
         }catch(error){
             console.log(error);
         };
 
-    //   socket.on('input-change', msg => {
-    //     socket.broadcast.emit('update-input', msg)
-    //   })
     })
   }
   res.end()

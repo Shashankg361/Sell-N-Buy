@@ -44,7 +44,7 @@ export default function ShowProduct(){
                             </div>    
                             <div className="m-2 font-bold text-2xl mr-20"><h1><FontAwesomeIcon icon={faIndianRupee} />  8,000</h1>
                                 <h1>Under warrant</h1> 
-                                <h1>Booked </h1>
+                                <h1>Booked</h1>
                                 {mobileDets && <h1 className="font-normal text-base">{mobile.owner}</h1>}
                             </div>    
                         </div>
