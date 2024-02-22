@@ -10,6 +10,7 @@ import { useRouter } from "next/router";
 export default function Register({data}){
     //const router = new useRouter();
     const [newdata , setNewdata] = useState(JSON.parse(data)); 
+    const [isLoading,setIsLoading] = useState(false);
     // useEffect(()=>{
     // setNewdata();
     // },[data]);
@@ -41,6 +42,7 @@ export default function Register({data}){
     const submit = async (detail)=>{
        // console.log("isValid",valid);
         if(!valid){
+            setIsLoading(true);
             const {Email , FirstName ,LastName , Password} = detail;            
             const Verified = false;
             const now = new Date();
@@ -60,6 +62,8 @@ export default function Register({data}){
                 //router.push('/login');
             }catch(error){
                 alert("Error occured while registration");
+            }finally{
+                setIsLoading(false);
             }
             setValue('FirstName','');
             setValue('LastName','');
@@ -124,7 +128,8 @@ export default function Register({data}){
             <label className="font-semibold text-lg p-2 mt-4" id="Password">Password</label>
             <input type="password" className="p-2 border-4 rounded-lg" placeholder="Password" {...register("Password" ,{required:"This feild is required" , minLength:6})}></input>
             {errors.Password && <h1 className="text-red-500">This feild is required</h1>}
-            <input className="bg-gray-400 p-1 w-auto text-lg font-semibold mt-3 cursor-pointer border-2 border-black rounded-2xl mt-4" type="submit"></input>
+            { isLoading && <div className="text-red-500">Please Wait... Don't do changes</div>}     
+            <input disabled={isLoading} className={`bg-gray-500 text-zinc-900 p-1 text-lg font-semibold mt-3 cursor-pointer hover:opacity-70 border-2 border-black rounded-2xl ${isLoading && "opacity-30"}`} type="submit"></input>
         </form>
         </>
     )

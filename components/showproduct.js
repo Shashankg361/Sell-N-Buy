@@ -28,9 +28,9 @@ export default function ShowProduct(){
 
     return(
         <div>
-            {mobileDets && mobileDets.map((mobile)=>{
+            {mobileDets && mobileDets.map((mobile,index)=>{
                 return (
-                    <div className="flex flex-col items-center m-5">
+                    <div key={index} className="flex flex-col items-center m-5">
                         <div className="bg-gray-200 rounded-lg p-2 m-2 text-black flex justify-between w-4/5">
                             <div className="flex ">
                                 <img src={mobile.ImagesUrl[0]} style={{maxWidth:"12%"}} className="m-2 rounded-lg"/>

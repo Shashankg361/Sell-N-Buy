@@ -109,9 +109,5 @@ const createSession = async (Email)=>{
         }
     }catch(err){
         console.log("Error occured while finding the document else doc not found",err);
-    }
-    
-
-    
-    
+    }    
 }
