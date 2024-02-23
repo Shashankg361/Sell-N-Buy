@@ -3,6 +3,7 @@ import axios from "axios";
 import { useContext, useState ,useRef} from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
+import { redirect } from "next/dist/server/api-utils";
 
 export default function Login(){
     const router = useRouter();
@@ -16,12 +17,18 @@ export default function Login(){
             const {Email,Password} = data;
             const response = await axios.post("/api/login",{Email,Password});
             const Resdata = response.data;
-            console.log("Recived",Resdata.Data)
-            setUserData(Resdata.Data);
-            setUploaded(Resdata.Data.Uploaded);
-            setBooked(Resdata.Data.Booked);
-            alert(Resdata.Message);
-            Resdata.LoggedIn && router.push('/');
+            if(Resdata.LoggedIn){
+                console.log("Recived",Resdata.Data)
+                setUserData(Resdata.Data);
+                setUploaded(Resdata.Data.Uploaded);
+                setBooked(Resdata.Data.Booked);
+                localStorage.setItem("token",Resdata.Token);
+                alert(Resdata.Message);
+                router.push('/');
+            }else{
+                alert(Resdata.Message);
+            }
+            //Resdata.LoggedIn && router.push('/');
             //console.log("message",Resdata.Message , Resdata.LoggedIn);
             setLoggedIn(Resdata.LoggedIn);
             reset();

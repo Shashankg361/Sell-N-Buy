@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const db = client.db('User_Details');
+var token;
 
 export default async function login(req, res){
 
@@ -18,6 +19,7 @@ export default async function login(req, res){
                 console.log("Verified",data);
                 return data;
             }
+
         }catch(err){
             res.status(200).json({LoggedIn:false , Message:'Error occured!'})
         }
@@ -29,9 +31,9 @@ export default async function login(req, res){
         const check = await checkVerified(Email);
         console.log(check,!check);
         if(check===false){
-            res.status(200).json({LoggedIn:false , Message:'Please verify you email(check mail)'}) ;
+            res.status(200).json({LoggedIn:false , Message:'Please verify you email(check mail)',Data:null ,Token:null}) ;
         }else if(check === null){
-            res.status(200).json({LoggedIn:false , Message:'Email incorrect'});
+            res.status(200).json({LoggedIn:false , Message:'Email incorrect',Data:null ,Token:null});
         }else{
             const data = await getPassword(Email);
             const PasswordCred = data.PasswordCred;
@@ -47,10 +49,10 @@ export default async function login(req, res){
             if(matched){
                 const result = await createSession(Email);
                 result?
-                    res.status(200).json({LoggedIn:result , Message:'Successfull LoggedIn' , Data:sendData}):
-                    res.status(200).json({LoggedIn:result , Message:'Error occured', Data:null});
+                    res.status(200).json({LoggedIn:result , Message:'Successfull LoggedIn' , Data:sendData ,Token:token}):
+                    res.status(200).json({LoggedIn:result , Message:'Error occured', Data:null ,Token:null});
             }else{
-                res.status(200).json({LoggedIn:false,Message:'Password Incorrect', Data:null});
+                res.status(200).json({LoggedIn:false,Message:'Password Incorrect', Data:null ,Token:null});
             }
         }
         //res.status(200).json({message:'Executed'});
@@ -60,12 +62,12 @@ export default async function login(req, res){
 
 }
 
-const getPassword = async (Email)=>{
+export const getPassword = async (Email)=>{
     
     const collection = db.collection('Registration');
     const query = {Email : Email};
     const data = await collection.findOne(query);
-    console.log("data",data);
+    //console.log("data",data);
     return data;
 }
 
@@ -79,7 +81,7 @@ const calculation = (PasswordCred,Password)=>{
 
 const createSession = async (Email)=>{
     const sceretkey = crypto.randomBytes(32).toString('hex'); 
-    const token = jwt.sign({Email},sceretkey , {expiresIn : '5h'});
+    token = jwt.sign({Email},sceretkey , {expiresIn : '5h'});
     //const db = client.db('User_Details');
     const collection = db.collection('Login_Dets');
     try{
@@ -96,7 +98,7 @@ const createSession = async (Email)=>{
                 
             }
         }else{
-            //const loginData = {sceretkey , token}
+            //const loginData = {sceretkey , Token}
             const filter = {Email};
             const updateDoc = {$set:{sceretkey , token}}
             try{
