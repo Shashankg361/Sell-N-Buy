@@ -56,7 +56,14 @@ function RemoveLock(){
     const {register,formState:{errors},handleSubmit,watch,reset,formState} = useForm();
     const {userData,setUploaded,setBooked} = useContext(pool);
     const [isLoading,setIsLoading] = useState(false);
+    const [warranty,setWarranty] = useState(null);
     
+    useEffect(()=>{
+        setWarranty(watch("UnderWarranty"));
+        //console.log("warranty",watch("UnderWarranty"));
+    },[watch("UnderWarranty")])
+    
+
     //websocket for updating uploaded and booked variable
     useEffect(()=>{
         const io = new WebSocket('ws://localhost:8080');
@@ -203,6 +210,14 @@ function RemoveLock(){
                         <label className="font-semibold text-lg p-2">Shop name</label>
                         <input type="text" className="p-2 border-4 rounded-lg" placeholder="eg: om sai mobiles" {...register('ShopName',{required:'This feild is required'})}/>
                         {errors.ShopName && <h1 className="text-red-500">{errors.ShopName.message}</h1>}
+
+                        <label className="font-semibold text-lg p-2">Under Warranty</label>
+                        <select className="p-2 border-4 rounded-lg" {...register('UnderWarranty',{required:'This feild is required'})}>
+                            <option value={false}>No</option>
+                            <option value={true}>Yes</option>
+                        </select>
+                        {warranty === "true" && <h1 className="text-black">{warranty?"If yes, Please mention the remaining days in Description":""}</h1>}
+                        {errors.UnderWarranty && <h1 className="text-red-500">{errors.UnderWarranty.message}</h1>}
 
                         <label className="font-semibold text-lg p-2">Description</label>
                         <textarea type="text" className="p-2 border-4 rounded-lg" placeholder="eg: Describe the condition & features of mobile" {...register('Description',{required:'This feild is required'})}/>

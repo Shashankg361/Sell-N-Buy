@@ -10,7 +10,7 @@ import { useRouter } from 'next/router';
 
 const inter = Inter({ subsets: ['latin'] })
 export default function Home({data}) {
-  //console.log("Data:",JSON.parse(data));
+  console.log("Data:",JSON.parse(data));
   const {setMobileDets,setLoggedIn,setUserData,setBooked,setUploaded,userData} = useContext(pool);
   const router = useRouter();
   
