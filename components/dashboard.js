@@ -8,10 +8,10 @@ export default function Dashboard(){
 
     // uploaded && console.log("Uploaded",uploaded);
 
-    useEffect(()=>{
-        console.log("changed",uploaded);
-        //console.log("Booked",booked);
-    },[uploaded])
+    // useEffect(()=>{
+    //     console.log("changed",uploaded);
+    //     //console.log("Booked",booked);
+    // },[uploaded])
 
     return(
         <div className="h-full overflow-y-hidden">

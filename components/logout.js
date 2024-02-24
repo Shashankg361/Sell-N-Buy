@@ -1,7 +1,3 @@
-export default function Logout(){
-    return(
-        <div>
-            
-        </div>
-    )
-}
+// import { redirect } from "next/dist/server/api-utils";
+// import { useRouter } from "next/router";
+
