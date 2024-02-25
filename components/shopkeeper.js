@@ -179,6 +179,10 @@ function RemoveLock(){
                         <input type="text" className="p-2 border-4 rounded-lg" placeholder="Enter company name" {...register('Cname',{required:'This feild is required'})}/>
                         {errors.Cname && <h1 className="text-red-500">{errors.Cname.message}</h1>}
 
+                        <label className="font-semibold text-lg p-2">Mobile color</label>
+                        <input type="text" className="p-2 border-4 rounded-lg" placeholder="eg: Stargaze Blue" {...register('Color',{required:'This feild is required'})}/>
+                        {errors.Color && <h1 className="text-red-500">{errors.Color.message}</h1>}
+
                         <label className="font-semibold text-lg p-2">Rear camera</label>
                         <input type="text" className="p-2 border-4 rounded-lg" placeholder="eg: 48+12+8" {...register('RearC',{required:'This feild is required'})}/>
                         {errors.RearC && <h1 className="text-red-500">{errors.RearC.message}</h1>}

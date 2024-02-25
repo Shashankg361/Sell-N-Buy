@@ -37,7 +37,7 @@ export default function ShowProduct(){
                                 <div className="flex ">
                                     <img src={mobile.ImagesUrl[0]} style={{maxWidth:"12%"}} className="m-2 rounded-lg"/>
                                     <div>
-                                        <h1 className="m-2 font-semibold text-xl">{mobile.Mname}</h1>
+                                        <h1 className="m-2 font-semibold text-xl">{mobile.Mname}{`(${mobile.Color})`}</h1>
                                         <h1 className="m-1 ml-2 text-base">- Rear camera {mobile.RearC + " | "+mobile.FrontC} front camera</h1>
                                         <h1 className="m-1 ml-2 text-base">- Ram {mobile.Ram + " | " + mobile.Rom} Rom</h1>
                                         <h1 className="m-1 ml-2 text-base">- Processor {mobile.Processor}</h1>
@@ -45,7 +45,7 @@ export default function ShowProduct(){
                                     </div>
                                 </div>    
                                 <div className="m-2 font-bold text-2xl mr-20"><h1><FontAwesomeIcon icon={faIndianRupee} />{mobile.Price}</h1>
-                                    <h1>Under warrant</h1> 
+                                    {mobile.UnderWarranty == 'true'&& <h1>Under warrant</h1>} 
                                     <h1>{mobile.Booked ? "Booked":"Available"}</h1>
                                     {mobileDets && <h1 className="font-normal text-base">{mobile.owner}</h1>}
                                 </div>    
