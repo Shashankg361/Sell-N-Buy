@@ -24,7 +24,7 @@ export default function Login(){
                 setBooked(Resdata.Data.Booked);
                 localStorage.setItem("token",Resdata.Token);
                 alert(Resdata.Message);
-                router.push('/');
+                router.back();
             }else{
                 alert(Resdata.Message);
             }

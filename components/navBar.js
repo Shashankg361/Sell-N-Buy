@@ -8,7 +8,10 @@ export default function Navbar(){
     return<>
         <div className="flex justify-between items-center">
             <div>
-                <h1 className="font-bold text-2xl ">AaOo</h1>
+                <Link href={"/"}>
+                    <h1 className="font-bold text-2xl ">AaOo</h1>
+                </Link>
+                
             </div>
             <div>
                 {
