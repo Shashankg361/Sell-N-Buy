@@ -4,9 +4,10 @@ import { useRouter } from "next/router";
 import Navbar from "@/components/navBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faIndianRupee } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
 
 export default function Product(){
-    const {mobileDets} = useContext(pool);
+    const {mobileDets,userData} = useContext(pool);
     
     const router = useRouter();
     const query = router.query.productId;
@@ -19,6 +20,21 @@ export default function Product(){
     useEffect(()=>{
         setCurrentImage(currentImage);
     },[currentImage]);
+
+    //function for booking the product
+    const Booking = async ()=>{
+        const userName = userData.Name;
+        const userEmail = userData.Email;
+        const productId = product[0]?._id;
+        const productName = product[0]?.Mname;
+        const shopName = product[0]?.ShopName;
+
+        const data = {userName,userEmail,productId,productName,shopName};
+        const response = await axios.post('/api/Booking',{data});
+        const message = response.data;
+        alert(message.message);
+
+    }
     
 
     console.log("product detail",product);
@@ -27,12 +43,12 @@ export default function Product(){
         <div className="text-black bg-white h-screen w-screen overflow-y-scroll p-2">
             <Navbar></Navbar>
             <div>
-                <div className="flex ">
+                <div className="flex m-2">
                     <div className="flex">
                         <div className="flex flex-col m-2">
                             <ul>
                                 {images.map((img)=>{
-                                    return <li><img src={`${img}`} onClick={()=>setCurrentImage(img)} className="h-20 w-20 border-2 border-black rounded-lg" /></li>
+                                    return <li><img src={`${img}`} onClick={()=>setCurrentImage(img)} className="h-20 w-20 m-1 border-2 border-black rounded-lg" /></li>
                                 })}
                             </ul>
                         </div>
@@ -43,7 +59,7 @@ export default function Product(){
                     <div className="flex flex-col text-2xl shadow-lg shadow-gray-900 rounded-lg p-2 w-3/5 m-1 p-4"> 
                         <div className="flex justify-between">
                             <h1 className="font-normal text-2xl ml-3 underline decoration-double decoration-gray-900 decoration-2" >{product[0].Mname}{`(${product[0].Color})`}</h1>
-                            <div className={`border-2 border-none ${product[0].Booked ? "bg-red-500":"bg-green-500"} rounded-lg p-2`}><button>{ product[0].Booked ? "Booked" : "Click to Book"}</button></div>
+                            <div className={`border-2 ${product[0].Booked ? "hover:bg-red-300":"hover:bg-green-300"} border-none ${product[0].Booked ? "bg-red-500":"bg-green-500"} rounded-lg p-2`}><button onClick={Booking}>{ product[0].Booked ? "Booked" : "Click to Book"}</button></div>
                         </div>
                     
                     <h1 className="font-bold text-4xl antialiased italic m-5"><FontAwesomeIcon icon={faIndianRupee} />{product[0]?.Price}</h1>
