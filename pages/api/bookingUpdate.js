@@ -3,7 +3,7 @@ import { ObjectId } from "mongodb";
 
 export default async function bookingUpdate(req,res){
     const Rquery = req.query;
-    //console.log("query",Rquery);
+    console.log("query",Rquery);
     const db = client.db('MobileDets');
     const collection = db.collection('Details');
     const id = new ObjectId(Rquery.query);

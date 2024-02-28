@@ -24,6 +24,7 @@ export default function Product(){
     const {data,error} = useSWR("Booking",()=>fetcher(query));
 
     useEffect(()=>{
+        //console.log("changed");
         setProduct(data)
     },[data])
 

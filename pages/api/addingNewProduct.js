@@ -1,6 +1,6 @@
 // import { client } from '@/database/handleDatabase';
 // import { Server } from 'socket.io';
-
+//Socket
 // const SocketHandler = (req, res) => {
 //   if (res.socket.server.io) {
 //     console.log('Socket is already running')

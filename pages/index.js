@@ -9,6 +9,8 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import { SWRConfig } from 'swr/_internal';
 import { json } from 'micro';
+import { ObjectId } from 'mongodb';
+const jwt = require('jsonwebtoken');
 
 const inter = Inter({ subsets: ['latin'] })
 export default function Home({fallback}) {
@@ -52,6 +54,7 @@ async function getData(){
 export async function getServerSideProps(){
   
     const data = await getData();
+    await checkBooking();
     //const data = JSON.stringify(response);
     return{
       props:{
@@ -86,4 +89,28 @@ export async function checkToken({setLoggedIn,setUserData,setBooked,setUploaded,
       router.push('/');
     }
   }
+}
+
+async function checkBooking(){
+  const date = new Date();
+  const db = client.db('MobileDets');
+  const DetailsCollection = db.collection('Details')
+  const currentBookingCollection = db.collection('CurrentBooked');
+  try{
+    const response = await currentBookingCollection.find({}).toArray();
+    response.map(async (element)=>{
+      console.log("Verify",jwt.verify(element.token,element.sceretkey));
+      const elementId = new ObjectId(element._id);
+      const verify = jwt.verify(element.token,element.sceretkey);
+      const data = verify.dataStore;
+      const id = new ObjectId(data.productId) ;
+      if(verify.exp<date*1000){
+        await DetailsCollection.updateOne({_id:id},{Booked:false});
+        await currentBookingCollection.deleteOne({_id:elementId});
+      }
+    })
+  }catch(error){
+    console.error(error);
+  }
+  
 }
