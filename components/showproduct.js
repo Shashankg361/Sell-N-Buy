@@ -5,27 +5,42 @@ import axios from "axios";
 import Link from "next/link";
 import { useContext, useEffect } from "react";
 import { io } from "socket.io-client";
+import useSWR from "swr";
+
+const fetcher = async ()=>{
+    const response = await axios('/api/getMobileDets');
+    const data = response.data;
+    //console.log("Update",data);
+    return data;
+}
 
 export default function ShowProduct(){
     const {mobileDets,setMobileDets} = useContext(pool);
-
-    const socketFunc = async()=>{
-        await axios('api/addingNewProduct');
-        const socket = io();
-        socket.on('connect',()=>{
-            console.log('connected');
-        });
-
-        socket.on('updated-document',(message)=>{
-            const newData = JSON.parse(message);
-            console.log("Datatatatatat",newData , newData.fullDocument);
-            mobileDets && setMobileDets([...mobileDets,newData.fullDocument]);
-        })
-    }
+    var {data,error} = useSWR('MobileDets',fetcher);
+    //data = JSON.stringify(data);
 
     useEffect(()=>{
-        socketFunc();
-    },[])
+        console.log("Dataaaaaaaa",data);
+        setMobileDets(data);
+    },[data]);
+
+    // const socketFunc = async()=>{
+    //     await axios('api/addingNewProduct');
+    //     const socket = io();
+    //     socket.on('connect',()=>{
+    //         console.log('connected');
+    //     });
+
+    //     socket.on('updated-document',(message)=>{
+    //         const newData = JSON.parse(message);
+    //         console.log("Datatatatatat",newData , newData.fullDocument);
+    //         mobileDets && setMobileDets([...mobileDets,newData.fullDocument]);
+    //     })
+    // }
+
+    // useEffect(()=>{
+    //     socketFunc();
+    // },[])
 
     return(
         <div>

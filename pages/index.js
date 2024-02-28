@@ -7,47 +7,59 @@ import ShowProduct from '@/components/showproduct';
 import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import { SWRConfig } from 'swr/_internal';
+import { json } from 'micro';
 
 const inter = Inter({ subsets: ['latin'] })
-export default function Home({data}) {
-  console.log("Data:",JSON.parse(data));
+export default function Home({fallback}) {
+  //console.log("Data:",JSON.parse(data));
   const {setMobileDets,setLoggedIn,setUserData,setBooked,setUploaded,userData} = useContext(pool);
   const router = useRouter();
   
-  useEffect(()=>{
-    setMobileDets(JSON.parse(data));
-  },[])
+  // useEffect(()=>{
+  //   setMobileDets(JSON.parse(data));
+  // },[])
 
   useEffect(()=>{
     checkToken({setLoggedIn,setUserData,setBooked,setUploaded,userData,router});
   },[])
 
   return (
-    <main
-      className={`p-3 min-h-screen text-black ${inter.className} bg-white`}
-    >
-      <Navbar />
-      <ShowProduct />
-    </main>
+    <SWRConfig value={{fallback}}>
+      <main
+        className={`p-3 min-h-screen text-black ${inter.className} bg-white`}
+      >
+        <Navbar />
+        <ShowProduct />
+      </main>
+    </SWRConfig>
+    
   )
 }
 
-export async function getServerSideProps(){
-  
+async function getData(){
   try{
     await connectDB();
     const db = client.db('MobileDets');
     const collection = db.collection('Details');
     const response = await collection.find({}).toArray();
-    const data = JSON.stringify(response);
-    return{
-      props:{data},
-    }
+    return response
   }catch(error){
+    console.log(error);
+  }
+}
+
+export async function getServerSideProps(){
+  
+    const data = await getData();
+    //const data = JSON.stringify(response);
     return{
-      props:{data:error},
-    }
-  }   
+      props:{
+        fallback:{
+          "MobileDets":JSON.parse(JSON.stringify(data)),
+        }
+      },
+    }   
 }
 
 export async function checkToken({setLoggedIn,setUserData,setBooked,setUploaded,userData,router}){
