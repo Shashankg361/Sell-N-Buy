@@ -52,7 +52,7 @@ async function getData(){
 }
 
 export async function getServerSideProps(){
-  
+
     const data = await getData();
     await checkBooking();
     //const data = JSON.stringify(response);
@@ -65,6 +65,7 @@ export async function getServerSideProps(){
     }   
 }
 
+//This fucntion check the session token on first load
 export async function checkToken({setLoggedIn,setUserData,setBooked,setUploaded,userData,router}){
   if(window && userData===null){
     if(localStorage.getItem("token")){
@@ -91,26 +92,30 @@ export async function checkToken({setLoggedIn,setUserData,setBooked,setUploaded,
   }
 }
 
+//This function checks the booking status of the mobile on first load
 async function checkBooking(){
-  const date = new Date();
+  const date = Date.now();
+  //console.log("woeling",date);
   const db = client.db('MobileDets');
-  const DetailsCollection = db.collection('Details')
+  const DetailsCollection = db.collection('Details');
   const currentBookingCollection = db.collection('CurrentBooked');
   try{
     const response = await currentBookingCollection.find({}).toArray();
     response.map(async (element)=>{
-      console.log("Verify",jwt.verify(element.token,element.sceretkey));
+      //console.log("Verify",jwt.verify(element.token,element.sceretkey));
       const elementId = new ObjectId(element._id);
-      const verify = jwt.verify(element.token,element.sceretkey);
-      const data = verify.dataStore;
+      const decode = jwtDecode(element.token,element.sceretkey);
+      const data = decode.dataStore;
+      //console.log("decode",decode.exp * 1000 < date);
+      //const expire = verify.getExpiresAt();
       const id = new ObjectId(data.productId) ;
-      if(verify.exp<date*1000){
-        await DetailsCollection.updateOne({_id:id},{Booked:false});
+      if(decode.exp * 1000<date){
+        //console.log("WOrking");
+        await DetailsCollection.updateOne({_id:id},{$set:{Booked:false}});
         await currentBookingCollection.deleteOne({_id:elementId});
       }
     })
   }catch(error){
-    console.error(error);
-  }
-  
+    console.log("Working",error);
+  } 
 }

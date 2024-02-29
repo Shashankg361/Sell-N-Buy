@@ -22,13 +22,14 @@ export default async function BookingEndPoint(req,res){
                 
                 console.log("stored",dataStore);
                 const sceretkey = crypto.randomBytes(32).toString('hex');
-                const token = jwt.sign({dataStore},sceretkey,{expiresIn:'60'});
+                const token = jwt.sign({dataStore},sceretkey,{expiresIn:'1h'});
                 const data = {sceretkey,token}
                 console.log("working",productId);
                 try{
                     await CurrentBooking.insertOne(data);
                     await BookingCollection.insertOne(data);
                     const query = {_id:Id};
+                    console.log("workingggg");
                     await DetailsCollection.updateOne(query,{$set:{Booked:true}});
                     //console.log("Update",updateBooked);
                     //console.log("Booking response",response);

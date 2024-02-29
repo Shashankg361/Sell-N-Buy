@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faIndianRupee } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import useSWR from "swr";
+import { checkToken } from "..";
 
 async function fetcher(query){
     const response = await axios(`/api/bookingUpdate?query=${query}`);
@@ -14,14 +15,18 @@ async function fetcher(query){
 }
 
 export default function Product(){
-    const {mobileDets,userData,LoggedIn} = useContext(pool);
+    const {userData,LoggedIn,setLoggedIn,setUserData,setUploaded,setBooked} = useContext(pool);
     const [currentImage,setCurrentImage]=useState(null);
-    const [Booked,setBooked] = useState(null);
+    const [Booked,setBookedd] = useState(null);
     const router = useRouter();
     const query = router.query.productId;
     const[product,setProduct] = useState(null);
 
     const {data,error} = useSWR("Booking",()=>fetcher(query));
+
+    useEffect(()=>{
+        checkToken({setLoggedIn,setUserData,setBooked,setUploaded,userData,router});
+    })
 
     useEffect(()=>{
         //console.log("changed");
@@ -30,7 +35,7 @@ export default function Product(){
 
     useEffect(()=>{
         setCurrentImage( product && product?.ImagesUrl[0]);
-        setBooked(product && product?.Booked);
+        setBookedd(product && product?.Booked);
     },[product])
     
     
@@ -54,8 +59,7 @@ export default function Product(){
             const response = await axios.post('/api/Booking',data);
             const {message,Booked} = response.data;
             console.log("Response",message)
-            setBooked(Booked);
-
+            setBookedd(Booked)
             alert(message);
         }else{
             alert("Please LogIn!")
