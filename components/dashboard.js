@@ -8,13 +8,39 @@ import { faIndianRupee, faRupee } from "@fortawesome/free-solid-svg-icons";
 
 export default function Dashboard(){
     const {uploaded,booked,userData,mobileDets} = useContext(pool);
-    console.log("fuck you",mobileDets);
-    let show;
-    if(mobileDets){ 
-        show = mobileDets.filter((element)=>{
-        console.log("working");
-        return element.owner === userData.Email;
-    })}
+    //console.log("fuck you",mobileDets);
+    const [show,setShow] = useState('');
+    const [filterArr,setFilterArr] = useState('');
+    useEffect(()=>{
+        if(mobileDets){ 
+            setShow(mobileDets.filter((element)=>{
+            //
+            return element.owner === userData.Email;
+            }))
+        }
+    },[]);
+
+    useEffect(()=>{
+        //console.log("set working");
+        show && setFilterArr(show);
+    },[show])
+     
+    function search(e){
+        //console.log("change",e.target.value);
+        if(show){
+                setFilterArr(show.filter((element)=>{
+                const name = element.Mname.trim().toLowerCase();
+                //console.log("workingggg");
+                return name.includes(e.target.value.trim().toLowerCase());
+            }))
+
+        }
+    }
+
+    useEffect(()=>{
+        filterArr && console.log("AHow",filterArr);
+    },[filterArr])
+    
 
     // uploaded && console.log("Uploaded",uploaded);
 
@@ -40,12 +66,12 @@ export default function Dashboard(){
                     <h1 className="font-semibold text-xl">Mobile</h1>
                     <div className=" flex items-center bg-gray-200 p-3 ml-16 rounded-r-3xl rounded-l-3xl">
                         <FontAwesomeIcon icon={faMagnifyingGlass} className="text-xl p-1"/>
-                        <input placeholder="Search by title..." className="outline-0 placeholder:italic placeholder:text-gray-600 bg-gray-200 text-black w-80 p-1"></input>
+                        <input onChange={search} placeholder="Search by title..." className="outline-0 placeholder:italic placeholder:text-gray-600 bg-gray-200 text-black w-80 p-1"></input>
                         <button type="button"className="ml-1">Search</button>
                     </div>
                 </div>
                 <div className="m-2 bg-white w-auto h-full overflow-scroll">
-                    {show && <Showproduct show = {show} />}
+                    {filterArr && <Showproduct show = {filterArr} />}
                 </div>
             </div>
         </div>
