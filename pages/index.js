@@ -86,8 +86,6 @@ export async function checkToken({setLoggedIn,setUserData,setBooked,setUploaded,
           //alert(data.Message);
         }
       }
-    }else{
-      router.push('/');
     }
   }
 }

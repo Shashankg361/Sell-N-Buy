@@ -78,9 +78,9 @@ export default function Dashboard(){
     )
 }
 
-function Showproduct({show}){
+export function Showproduct({show}){
 
-    show && console.log("fuckYouagain",show);
+    //show && console.log("fuckYouagain",show);
     return(
         <div>
            {show.map((mobile,index)=>{

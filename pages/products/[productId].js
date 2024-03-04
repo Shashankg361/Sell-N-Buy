@@ -26,7 +26,7 @@ export default function Product(){
 
     useEffect(()=>{
         checkToken({setLoggedIn,setUserData,setBooked,setUploaded,userData,router});
-    })
+    },[]);
 
     useEffect(()=>{
         //console.log("changed");
