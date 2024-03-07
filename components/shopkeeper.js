@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import { useContext, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+import { io } from "socket.io-client";
 
 export default function Shopkeeper(){
     const {userData} = useContext(pool);
@@ -63,31 +64,28 @@ function RemoveLock(){
         //console.log("warranty",watch("UnderWarranty"));
     },[watch("UnderWarranty")])
     
+    const socKet = async()=>{
+        await axios('api/newUser');
+        const socket = io();
+
+        socket.on('connect',()=>{
+            console.log('connected');
+        });
+
+        socket.on('update-document',(message)=>{
+            const newDoc = JSON.parse(message);
+            if(newDoc.operationType === "update"){
+                const uploadInfo = newDoc.updateDescription.updatedFields; 
+                if(uploadInfo.Uploaded != undefined){
+                    setUploaded(uploadInfo.Uploaded);
+                }
+            }
+        })
+    }
 
     //websocket for updating uploaded and booked variable
     useEffect(()=>{
-        const io = new WebSocket('ws://localhost:8080');
-        io.onopen = ()=>{
-            console.log('Websocket connected');
-        }
- 
-        io.onmessage = (message)=>{
-            const newAdded = JSON.parse(message.data);
-            console.log(newAdded);
-            const uploadInfo = newAdded.updateDescription.updatedFields; 
-            if(newAdded.operationType === "update"){
-                if(uploadInfo.Uploaded != undefined){
-                    console.log("Working",uploadInfo.Uploaded,uploadInfo.Booked);
-                    setUploaded(uploadInfo.Uploaded);
-                }else{
-                    setBooked(uploadInfo.Booked);
-                }
-            }
-        }
-
-        io.onclose = ()=>{
-            console.log('disconnected to websocket');
-        }
+        socKet();
     },[]);
 
     //Handling file upload
@@ -237,7 +235,7 @@ function RemoveLock(){
 
                         <div className="grid grid-cols-2 gap-x-2 gap-y-2">
                             {previewUrls && previewUrls.map((url,index)=>{
-                                return <img src={url} alt="" id={index} style={{maxWidth : "100%"}}/>
+                                return <img src={url} key={index} alt="" style={{maxWidth : "100%"}}/>
                             })}
                         </div>
                         

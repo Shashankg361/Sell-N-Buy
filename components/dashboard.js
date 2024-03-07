@@ -103,7 +103,7 @@ export function Showproduct({show}){
         <div>
            {show.map((mobile,index)=>{
                 return (
-                    <Link href={`/products/${mobile._id}`}>
+                    <Link key={index} href={`/products/${mobile._id}`}>
                         <div key={index} className="flex flex-col items-center m-5">
                             <div className="bg-gray-200 rounded-lg p-2 m-2 text-black flex justify-between w-4/5">
                                 <div className="flex ">

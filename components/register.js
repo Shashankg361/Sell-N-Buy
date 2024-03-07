@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { get, useForm, useWatch } from "react-hook-form";
 import { useRouter } from "next/router";
+import { io } from "socket.io-client";
 //import WebSocket from "ws";
 
 
@@ -17,24 +18,25 @@ export default function Register({data}){
 
     const [valid , setValid] = useState(null);
 
-    useEffect(()=>{
-        const io = new WebSocket('ws://localhost:8080');
-        io.onopen = ()=>{
-            console.log('Websocket connected');
-        }
+    const socKet = async ()=>{
+        await axios('api/newUser');
+        const socket = io();
 
-        io.onmessage = (message)=>{
-            const newAdded = JSON.parse(message.data);
-            // console.log("Type",newAdded.operationType);
-            // console.log("newly",newAdded);
-            if(newAdded.operationType === "insert"){
-                setNewdata([...newdata,newAdded.fullDocument]);
+        socket.on('connect',()=>{
+            console.log('connected register');
+        });
+
+        socket.on('update-document',(message)=>{
+            const newDoc = JSON.parse(message);
+            //console.log("regiterd",newDoc.fullDocument);
+            if(newDoc.operationType === "insert"){
+                setNewdata([...newdata,newDoc.fullDocument]);
             }
-        }
+        })
+    }
 
-        io.onclose = ()=>{
-            console.log('disconnected to websocket');
-        }
+    useEffect(()=>{
+        socKet();
     },[]);
 
     const {register , formState:{errors} ,setValue, handleSubmit} = useForm();
@@ -128,7 +130,7 @@ export default function Register({data}){
             <label className="font-semibold text-lg p-2 mt-4" id="Password">Password</label>
             <input type="password" className="p-2 border-4 rounded-lg" placeholder="Password" {...register("Password" ,{required:"This feild is required" , minLength:6})}></input>
             {errors.Password && <h1 className="text-red-500">This feild is required</h1>}
-            { isLoading && <div className="text-red-500">Please Wait... Don't do changes</div>}     
+            { isLoading && <div className="text-red-500">{`Please Wait... Don't do changes`}</div>}     
             <input disabled={isLoading} className={`bg-gray-500 text-zinc-900 p-1 text-lg font-semibold mt-3 cursor-pointer hover:opacity-70 border-2 border-black rounded-2xl ${isLoading && "opacity-30"}`} type="submit"></input>
         </form>
         </>

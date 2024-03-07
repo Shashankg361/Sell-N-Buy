@@ -9,10 +9,10 @@ import { useRouter } from 'next/router';
 
 
 const inter = Inter({ subsets: ['latin'] })
-export default function login_register({data}) {
+export default function Login_register({data}) {
   const router = useRouter();
   
-  const [log , setLog] = useState('true');
+  const [log , setLog] = useState(true);
 
   function login(){
     setLog(true);

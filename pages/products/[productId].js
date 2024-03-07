@@ -79,8 +79,8 @@ export default function Product(){
                     <div className="flex">
                         <div className="flex flex-col m-2">
                             <ul>
-                                {product && images.map((img)=>{
-                                    return <li><img src={`${img}`} onClick={()=>setCurrentImage(img)} className="h-20 w-20 m-1 border-2 border-black rounded-lg" /></li>
+                                {product && images.map((img,index)=>{
+                                    return <li key={index}><img src={`${img}`}  onClick={()=>setCurrentImage(img)} className="h-20 w-20 m-1 border-2 border-black rounded-lg" /></li>
                                 })}
                             </ul>
                         </div>
