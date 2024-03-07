@@ -30,7 +30,8 @@ export default async function BookingEndPoint(req,res){
                     await BookingCollection.insertOne(data);
                     const query = {_id:Id};
                     console.log("workingggg");
-                    await DetailsCollection.updateOne(query,{$set:{Booked:true}});
+                    await DetailsCollection.updateOne(query,{$set:{Booked:true,BookedBy:userEmail}});
+                    //await DetailsCollection.updateOne(query,{$set:{Booked:true}});
                     //console.log("Update",updateBooked);
                     //console.log("Booking response",response);
                     res.status(200).json({message:"Booked!",Booked:true});

@@ -15,7 +15,7 @@ const jwt = require('jsonwebtoken');
 const inter = Inter({ subsets: ['latin'] })
 export default function Home({fallback}) {
   //console.log("Data:",JSON.parse(data));
-  const {setMobileDets,setLoggedIn,setUserData,setBooked,setUploaded,userData} = useContext(pool);
+  const {setLoggedIn,setUserData,setBooked,setUploaded,userData} = useContext(pool);
   const router = useRouter();
   
   // useEffect(()=>{
@@ -109,7 +109,7 @@ async function checkBooking(){
       const id = new ObjectId(data.productId) ;
       if(decode.exp * 1000<date){
         //console.log("WOrking");
-        await DetailsCollection.updateOne({_id:id},{$set:{Booked:false}});
+        await DetailsCollection.updateOne({_id:id},{$set:{Booked:false,BookedBy:""}});
         await currentBookingCollection.deleteOne({_id:elementId});
       }
     })

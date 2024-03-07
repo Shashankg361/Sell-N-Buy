@@ -8,7 +8,7 @@ import { io } from "socket.io-client";
 import useSWR from "swr";
 import { Showproduct } from "./dashboard";
 
-const fetcher = async ()=>{
+export const fetcher = async ()=>{
     const response = await axios('/api/getMobileDets');
     const data = response.data;
     //console.log("Update",data);

@@ -4,27 +4,45 @@ import { useContext, useEffect, useState } from "react";
 import { pool } from "@/pages/_app";
 import Link from "next/link";
 import { faIndianRupee, faRupee } from "@fortawesome/free-solid-svg-icons";
+import { fetcher } from "./showproduct";
 //import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function Dashboard(){
-    const {uploaded,booked,userData,mobileDets} = useContext(pool);
+    const {uploaded,booked,userData,mobileDets,setBooked,setMobileDets} = useContext(pool);
     //console.log("fuck you",mobileDets);
     const [show,setShow] = useState('');
     const [filterArr,setFilterArr] = useState('');
+    //on refresh mobileDets gets empty so, when page is refresh I will get the data
+    !mobileDets && fetcher().then(data=>setMobileDets(data));
+    //!mobileDets && 
+    //console.log("data",fetcher());
+
+    //filteration on the basis of email
     useEffect(()=>{
         if(mobileDets){ 
-            setShow(mobileDets.filter((element)=>{
+            setShow(mobileDets?.filter((element)=>{
             //
-            return element.owner === userData.Email;
+            return (element.owner === userData.Email || element.BookedBy === userData.Email);
             }))
         }
-    },[]);
+    },[mobileDets]);
 
+    //counting booked
+    useEffect(()=>{
+        const count = mobileDets?.filter((element)=>{
+            return (element.BookedBy === userData.Email);
+        });
+        setBooked(count?.length===0?0:count?.length);
+        console.log("count",count?.length);
+    },[mobileDets]);
+
+    //when ever show chnages this will run
     useEffect(()=>{
         //console.log("set working");
         show && setFilterArr(show);
-    },[show])
-     
+    },[show]);
+
+    //on change search function
     function search(e){
         //console.log("change",e.target.value);
         if(show){
@@ -37,9 +55,9 @@ export default function Dashboard(){
         }
     }
 
-    useEffect(()=>{
-        filterArr && console.log("AHow",filterArr);
-    },[filterArr])
+    // useEffect(()=>{
+    //     filterArr && console.log("AHow",filterArr);
+    // },[filterArr])
     
 
     // uploaded && console.log("Uploaded",uploaded);
