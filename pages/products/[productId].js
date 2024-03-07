@@ -84,11 +84,11 @@ export default function Product(){
                                 })}
                             </ul>
                         </div>
-                        <div className="h-auto w-auto m-1 overflow-hidden h-max shadow-lg shadow-gray-900">
+                        <div className="h-auto w-auto m-1 overflow-hidden shadow-lg shadow-gray-900">
                             <img src={`${currentImage}`} alt="" style={{height:"600px", width:"500px"}} className="rounded-lg"/>
                         </div>
                     </div>
-                    <div className="flex flex-col text-2xl shadow-lg h-max shadow-gray-900 rounded-lg p-2 w-3/5 m-1 p-4"> 
+                    <div className="flex flex-col text-2xl shadow-lg shadow-gray-900 rounded-lg p-2 w-3/5 m-1 p-4"> 
                         <div className="flex justify-between">
                             <h1 className="font-normal text-2xl ml-3 underline decoration-double decoration-gray-900 decoration-2" >{product &&  product?.Mname}{`(${product &&  product?.Color})`}</h1>
                             <div className={`border-2 ${Booked ? "hover:bg-red-300":"hover:bg-green-300"} border-none ${Booked ? "bg-red-500":"bg-green-500"} rounded-lg p-2`}>

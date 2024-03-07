@@ -113,40 +113,44 @@ function RemoveLock(){
 
     //API call for storing Image file and details
     const submit = async(details)=>{
-        const formData = new FormData();
+        if(files && (files.length <= 6)){
+            const formData = new FormData();
 
-        files && files.forEach((file , index) => {
-            formData.append(`file${index+1}`,file);
-        });
+            files && files.forEach((file , index) => {
+                formData.append(`file${index+1}`,file);
+            });
 
-        formData.append("details",JSON.stringify(details));
-        formData.append("owner",JSON.stringify(userData.Email));
+            formData.append("details",JSON.stringify(details));
+            formData.append("owner",JSON.stringify(userData.Email));
 
-        if(!files){
-            alert("please enter file");
-        }else{
-            //console.log(files);
-            try{
-                setIsLoading(true);
-                const response = await axios.post('/api/uploadtocloud',formData,{
-                    headers:{
-                        "Content-Type":"multipart/form-data",
-                    }
-                });
-                const data = response.data;
-                alert(data.message);
-                setURLs(data.URL.ImagesUrl);
-                console.log(data.URL.ImagesUrl);
-                reset();
-            }catch(error){
-                console.error(error);
-            }finally{
-                setIsLoading(false);
-                setToggle(!toggle);
+            if(!files){
+                alert("please enter file");
+            }else{
+                //console.log(files);
+                try{
+                    setIsLoading(true);
+                    const response = await axios.post('/api/uploadtocloud',formData,{
+                        headers:{
+                            "Content-Type":"multipart/form-data",
+                        }
+                    });
+                    const data = response.data;
+                    alert(data.message);
+                    setURLs(data.URL.ImagesUrl);
+                    console.log(data.URL.ImagesUrl);
+                    reset();
+                    setFiles(null);
+                    setPreviewUrls(null);
+                }catch(error){
+                    console.error(error);
+                }finally{
+                    setIsLoading(false);
+                    setToggle(!toggle);
+                }
             }
-            
+        }else{
+            alert("Please selcte upto 6 picture's");
         }
-
     }
 
     const closingBtn = ()=>{
