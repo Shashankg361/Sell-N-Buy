@@ -7,7 +7,7 @@ export default async function verificationMail(req,res){
         service:'gamil',
         auth:{
             user:'shashankslocal@gmail.com',
-            pass:process.env.MAIL_PASS,
+            pass:process.env.NEXT_PUBLIC_MAIL_PASS,
         }
     });
 

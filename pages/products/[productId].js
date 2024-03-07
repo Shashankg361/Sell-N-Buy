@@ -76,15 +76,15 @@ export default function Product(){
             <Navbar></Navbar>
             <div>
                 <div className="flex m-2">
-                    <div className="flex">
-                        <div className="flex flex-col m-2">
+                    <div className="flex h-svh">
+                        <div className="flex flex-col m-2 overflow-scroll">
                             <ul>
                                 {product && images.map((img,index)=>{
                                     return <li key={index}><img src={`${img}`}  onClick={()=>setCurrentImage(img)} className="h-20 w-20 m-1 border-2 border-black rounded-lg" /></li>
                                 })}
                             </ul>
                         </div>
-                        <div className="h-auto w-auto m-1 shadow-lg shadow-gray-900">
+                        <div className="h-auto w-auto m-1 overflow-hidden shadow-lg shadow-gray-900">
                             <img src={`${currentImage}`} alt="" style={{height:"600px", width:"500px"}} className="rounded-lg"/>
                         </div>
                     </div>

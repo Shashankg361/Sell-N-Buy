@@ -3,7 +3,7 @@ import { BlobServiceClient } from '@azure/storage-blob';
 import { IncomingForm } from 'formidable';
 import fs from 'fs';
 const containerName = 'images';
-const blobServiceClient = BlobServiceClient.fromConnectionString(process.env.AZURE_STORAGE_CONNECTION_STRING);
+const blobServiceClient = BlobServiceClient.fromConnectionString(process.env.NEXT_PUBLIC_AZURE_STORAGE_CONNECTION_STRING);
 const containerClient = blobServiceClient.getContainerClient(containerName);
 let ImagesUrl=[];
 
@@ -48,7 +48,7 @@ export default async function uploadToCloud(req, res) {
               const fileBuffer = fs.readFileSync(file[0].filepath);
               const blockBlobClient = containerClient.getBlockBlobClient(blobName);
               await blockBlobClient.upload(fileBuffer,file[0].size,undefined,{blobHTTPHeaders: { blobContentType: file[0].mimetype }});
-              const storageAccountUrl = `https://${process.env.AZURE_STORAGE_ACCOUNT}.blob.core.windows.net`;
+              const storageAccountUrl = `https://${process.env.NEXT_PUBLIC_AZURE_STORAGE_ACCOUNT}.blob.core.windows.net`;
               const blobUrl = `${storageAccountUrl}/${containerName}/${blobName}`;
               ImagesUrl = [...ImagesUrl,blobUrl];
             }
