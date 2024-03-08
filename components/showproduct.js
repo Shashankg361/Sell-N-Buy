@@ -65,7 +65,7 @@ export default function ShowProduct(){
 
             <div className=" p-5 pt-0 flex justify-center items-center ">
                 <div className="shadow-lg shadow-gray-400 p-5 border-0 rounded-3xl">
-                    <input type="text" onChange={search} className="w-96 rounded-lg mr-2 border-0 p-2" placeholder="Search by tile"></input>
+                    <input type="text" onChange={search} className="w-auto rounded-lg mr-2 border-0 p-2" placeholder="Search by tile"></input>
                     <FontAwesomeIcon icon={faSearch} className="text-xl p-1"/>
                 </div>
                 
