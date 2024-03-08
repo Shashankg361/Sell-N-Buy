@@ -104,10 +104,10 @@ export function Showproduct({show}){
            {show.map((mobile,index)=>{
                 return (
                     <Link key={index} href={`/products/${mobile._id}`}>
-                        <div key={index} className="flex flex-col items-center m-5">
-                            <div className="bg-gray-200 rounded-lg p-2 m-2 text-black flex justify-between w-4/5">
-                                <div className="flex ">
-                                    <img src={mobile.ImagesUrl[0]} style={{maxWidth:"12%"}} className="m-2 rounded-lg"/>
+                        <div className="flex flex-col items-center m-5">
+                            <div className="bg-gray-200 rounded-lg p-2 m-2 text-black flex flex-col items-center md:flex-row  md:justify-between w-4/5">
+                                <div className="flex flex-col md:flex-row items-center">
+                                    <img src={mobile.ImagesUrl[0]} className="m-2 w-1/2 md:w-24 rounded-lg"/>
                                     <div>
                                         <h1 className="m-2 font-semibold text-xl">{mobile.Mname}{`(${mobile.Color})`}</h1>
                                         <h1 className="m-1 ml-2 text-base">- Rear camera {mobile.RearC + " | "+mobile.FrontC} front camera</h1>
@@ -116,7 +116,7 @@ export function Showproduct({show}){
                                         <h1 className="m-1 ml-2 text-base">- Used for {mobile.UsedFor}</h1>
                                     </div>
                                 </div>    
-                                <div className="m-2 font-bold text-2xl mr-20"><h1><FontAwesomeIcon icon={faIndianRupee} />{mobile.Price}</h1>
+                                <div className="m-2 font-bold text-2xl hidden md:block mr-20"><h1><FontAwesomeIcon icon={faIndianRupee} />{mobile.Price}</h1>
                                     {mobile.UnderWarranty == 'true'&& <h1>Under warrant</h1>} 
                                     <h1>{mobile.Booked ? "Booked":"Available"}</h1>
                                     {show && <h1 className="font-normal text-base">{mobile.owner}</h1>}

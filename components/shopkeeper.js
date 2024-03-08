@@ -140,7 +140,7 @@ function RemoveLock(){
                     console.log(data.URL.ImagesUrl);
                     reset();
                     setFiles(null);
-                    setPreviewUrls(null);
+                    setPreviewUrls(null);1
                 }catch(error){
                     console.error(error);
                 }finally{
