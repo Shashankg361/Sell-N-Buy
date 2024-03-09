@@ -72,23 +72,23 @@ export default function Product(){
     console.log("product detail",product);
 
     return(
-        <div className="text-black bg-white h-screen w-screen overflow-y-scroll p-2">
+        <div className="text-black bg-white h-screen w-screen overflow-y-scroll overflow-x-hidden p-2">
             <Navbar></Navbar>
             <div>
                 <div className="flex flex-col md:flex-row m-2">
                     <div className="flex flex-col-reverse md:flex-row h-svh">
                         <div className="flex flex-row md:flex-col m-2">
-                            <ul className="flex flex-row md:flex-col">
+                            <ul className="flex flex-row justify-between md:flex-col">
                                 {product && images.map((img,index)=>{
                                     return <li key={index}><img src={`${img}`}  onClick={()=>setCurrentImage(img)} className="h-20 w-20 m-1 border-2 border-black rounded-lg" /></li>
                                 })}
                             </ul>
                         </div>
-                        <div  className="md:h-[600px] md:w-[500px] h-[400px] w-screen flex justify-center m-1 overflow-hidden shadow-lg shadow-gray-900">
+                        <div  className="md:h-[600px] md:w-[500px] h-[400px] w-screen flex m-5 justify-center md:m-1 overflow-hidden shadow-lg shadow-gray-900">
                             <img src={`${currentImage}`} alt=""  className="rounded-lg m-2"/>
                         </div>
                     </div>
-                    <div className="flex flex-col text-2xl shadow-lg shadow-gray-900 rounded-lg p-2 w-full md:w-3/5 m-5 p-5"> 
+                    <div className="flex flex-col text-2xl shadow-lg shadow-gray-900 rounded-lg p-2 w-full md:w-3/5 m-5 mb-14 md:m-5 p-5"> 
                         <div className=" md:flex justify-between">
                             <h1 className="font-normal text-2xl ml-3 underline decoration-double decoration-gray-900 decoration-2" >{product &&  product?.Mname}{`(${product &&  product?.Color})`}</h1>
                             <div className={`absolute bottom-0 left-0 w-screen md:w-40 flex justify-center md:relative border-2 ${Booked ? "hover:bg-red-300":"hover:bg-green-300"} border-none ${Booked ? "bg-red-500":"bg-green-500"} md:rounded-lg p-2`}>
