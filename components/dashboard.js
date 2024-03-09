@@ -68,7 +68,7 @@ export default function Dashboard(){
     // },[uploaded])
 
     return(
-        <div className="h-full overflow-y-hidden">
+        <div className="h-full overflow-hidden p-2">
             <div className="flex mt-2 p-1">
                 <div className="bg-white w-2/4 border-1 rounded-md p-2">
                     <h1 className="font-semibold text-2xl">Booked</h1>
@@ -82,7 +82,7 @@ export default function Dashboard(){
             <div className="flex flex-col h-3/4"> 
                 <div className="flex bg-white p-2 m-1 rounded-md items-center">
                     <h1 className="font-semibold text-xl">Mobile</h1>
-                    <div className=" flex items-center bg-gray-200 p-3 ml-16 rounded-r-3xl rounded-l-3xl">
+                    <div className=" flex items-center bg-gray-200 p-3 ml-5 md:ml-16 rounded-r-3xl rounded-l-3xl">
                         <FontAwesomeIcon icon={faMagnifyingGlass} className="text-xl p-1"/>
                         <input onChange={search} placeholder="Search by title..." className="outline-0 placeholder:italic placeholder:text-gray-600 bg-gray-200 text-black w-auto p-1"></input>
                     </div>
