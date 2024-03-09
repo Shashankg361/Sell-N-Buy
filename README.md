@@ -7,7 +7,7 @@ A customer will be able see the all mobile phones listed on market with images a
 I have to added some more features.
 
 #Demo
-[Sell-N-Buy](https://shashank-buy-n-sell.vercel.app/)
+[Sell-N-Buy](https://shashank-booking-site.vercel.app/)
 
 First, run the development server:
 
