@@ -98,7 +98,7 @@ export default function Register({data}){
         <form className="text-black flex flex-col mt-10 p-5" onSubmit={handleSubmit(submit)}>
             <div>
             <label className="font-semibold text-lg p-2" id="Name">Name</label>
-                <div className="flex">
+                <div className="flex flex-col md:flex-row">
                     <div className="flex flex-col">
                         <input placeholder="FirstName" type="text" className="p-2 border-4 rounded-lg" {...register("FirstName" ,{required:"This feild is required"})}></input>
                         {errors.FirstName && <h1 className="text-red-500">This feild is required</h1>}

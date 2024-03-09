@@ -84,8 +84,7 @@ export default function Dashboard(){
                     <h1 className="font-semibold text-xl">Mobile</h1>
                     <div className=" flex items-center bg-gray-200 p-3 ml-16 rounded-r-3xl rounded-l-3xl">
                         <FontAwesomeIcon icon={faMagnifyingGlass} className="text-xl p-1"/>
-                        <input onChange={search} placeholder="Search by title..." className="outline-0 placeholder:italic placeholder:text-gray-600 bg-gray-200 text-black w-80 p-1"></input>
-                        <button type="button"className="ml-1">Search</button>
+                        <input onChange={search} placeholder="Search by title..." className="outline-0 placeholder:italic placeholder:text-gray-600 bg-gray-200 text-black w-auto p-1"></input>
                     </div>
                 </div>
                 <div className="m-2 bg-white w-auto h-full overflow-scroll">

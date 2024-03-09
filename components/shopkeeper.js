@@ -59,6 +59,7 @@ function RemoveLock(){
     const [isLoading,setIsLoading] = useState(false);
     const [warranty,setWarranty] = useState(null);
     
+    //this is for slecting option in the form
     useEffect(()=>{
         setWarranty(watch("UnderWarranty"));
         //console.log("warranty",watch("UnderWarranty"));
@@ -170,7 +171,7 @@ function RemoveLock(){
             {
                 !isLoading?(
             <div className=" popUp text-black bg-gray-200 h-3/4 w-96 p-5 items-center overflow-y-auto">
-            <div className="text-white m-5 text-lg cursor-pointer right-0 top-0 fixed" onClick={closingBtn}>X</div>
+            <div className="text-white m-5 text-2xl font-semibold cursor-pointer left-0 top-0 fixed" onClick={closingBtn}>X</div>
                 
                         <form className="flex flex-col" onSubmit={handleSubmit(submit)}>
                         <label className="font-semibold text-lg p-2">Mobile name</label>
