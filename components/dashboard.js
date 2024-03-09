@@ -113,11 +113,11 @@ export function Showproduct({show}){
                                         <h1 className="m-1 ml-2 text-base">- Ram {mobile.Ram + " | " + mobile.Rom} Rom</h1>
                                         <h1 className="m-1 ml-2 text-base">- Processor {mobile.Processor}</h1>
                                         <h1 className="m-1 ml-2 text-base">- Used for {mobile.UsedFor}</h1>
+                                        <h1 className={`m-1 ml-2 text-lg font-semibold ${mobile.Booked?"text-red-400":"text-green-400"}`}>{mobile.Booked ? "Booked":"Available"}</h1>
                                     </div>
                                 </div>    
                                 <div className="m-2 font-bold text-2xl hidden md:block mr-20"><h1><FontAwesomeIcon icon={faIndianRupee} />{mobile.Price}</h1>
                                     {mobile.UnderWarranty == 'true'&& <h1>Under warrant</h1>} 
-                                    <h1>{mobile.Booked ? "Booked":"Available"}</h1>
                                     {show && <h1 className="font-normal text-base">{mobile.owner}</h1>}
                                 </div>    
                             </div>

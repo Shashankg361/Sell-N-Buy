@@ -3,7 +3,7 @@ import { pool } from "../_app";
 import { useRouter } from "next/router";
 import Navbar from "@/components/navBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faIndianRupee } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faIndianRupee } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import useSWR from "swr";
 import { checkToken } from "..";
@@ -69,11 +69,12 @@ export default function Product(){
     }
     
 
-    console.log("product detail",product);
+    //console.log("product detail",product);
 
     return(
         <div className="text-black bg-white h-screen w-screen overflow-y-scroll overflow-x-hidden p-2">
             <Navbar></Navbar>
+            <div className="p-2 border-2 rounded-lg font-semibold w-fit cursor-pointer text-gray-800 border-gray-700 mb-2" onClick={()=>router.back()}><FontAwesomeIcon icon={faArrowLeft} /> Back</div>
             <div>
                 <div className="flex flex-col items-center md:flex-row m-2">
                     <div className="flex flex-col-reverse md:flex-row h-svh">

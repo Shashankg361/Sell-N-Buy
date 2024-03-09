@@ -22,7 +22,7 @@ export default async function BookingEndPoint(req,res){
                 
                 console.log("stored",dataStore);
                 const sceretkey = crypto.randomBytes(32).toString('hex');
-                const token = jwt.sign({dataStore},sceretkey,{expiresIn:'1h'});
+                const token = jwt.sign({dataStore},sceretkey,{expiresIn:'6h'});
                 const data = {sceretkey,token}
                 console.log("working",productId);
                 try{
@@ -34,7 +34,7 @@ export default async function BookingEndPoint(req,res){
                     //await DetailsCollection.updateOne(query,{$set:{Booked:true}});
                     //console.log("Update",updateBooked);
                     //console.log("Booking response",response);
-                    res.status(200).json({message:"Booked!",Booked:true});
+                    res.status(200).json({message:"Booked! get your cell phone within next 6hrs if not booking will cancel",Booked:true});
                 }catch(error){
                     res.status(200).json({message:`Internal sever error ${error}`,Booked:false});
                 }
