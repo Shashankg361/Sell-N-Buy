@@ -62,12 +62,7 @@ export default function ShowProduct(){
 
     return(
         <div className="m-5">
-
-<<<<<<< HEAD
-            <div className="md:p-5 pt-0 flex justify-center items-center ">
-=======
             <div className=" md:p-5 pt-0 flex justify-center items-center ">
->>>>>>> 7bf18626ba87bee2ce6435dbbcbbefb61a03dea3
                 <div className="shadow-lg shadow-gray-400 p-4 md:p-5 border-0 rounded-3xl">
                     <input type="text" onChange={search} className="w-auto rounded-lg mr-2 border-0 p-2" placeholder="Search by tile"></input>
                     <FontAwesomeIcon icon={faSearch} className="text-xl"/>
