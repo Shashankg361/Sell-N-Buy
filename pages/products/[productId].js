@@ -75,16 +75,16 @@ export default function Product(){
         <div className="text-black bg-white h-screen w-screen overflow-y-scroll overflow-x-hidden p-2">
             <Navbar></Navbar>
             <div>
-                <div className="flex flex-col md:flex-row m-2">
+                <div className="flex flex-col items-center md:flex-row m-2">
                     <div className="flex flex-col-reverse md:flex-row h-svh">
                         <div className="flex flex-row md:flex-col m-2">
-                            <ul className="flex flex-row justify-between md:flex-col">
+                            <ul className="flex flex-row m-5 md:flex-col">
                                 {product && images.map((img,index)=>{
                                     return <li key={index}><img src={`${img}`}  onClick={()=>setCurrentImage(img)} className="h-20 w-20 m-1 border-2 border-black rounded-lg" /></li>
                                 })}
                             </ul>
                         </div>
-                        <div  className="md:h-[600px] md:w-[500px] h-[400px] w-screen flex m-5 justify-center md:m-1 overflow-hidden shadow-lg shadow-gray-900">
+                        <div  className="md:h-[600px] md:w-[500px] h-[400px] w-screen flex  justify-center md:m-1 overflow-hidden shadow-lg shadow-gray-900">
                             <img src={`${currentImage}`} alt=""  className="rounded-lg m-2"/>
                         </div>
                     </div>
